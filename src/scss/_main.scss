@@ -1,0 +1,98 @@
+@import "_canvas";
+@import "_plane";
+
+/*
+
+
+
+
+*/
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+  outline: none;
+  // CURSOR DEFAULT NONE
+  // cursor: none;
+}
+/* ---------BAR STYLES------- */
+
+// THE ERROR IN THIS FILE COMES FROM HERE********
+body::-webkit-scrollbar {
+  width: 1rem;
+}
+body::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgb(248, 248, 248);
+}
+//   background-color: rgb(248, 248, 248);
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(0, 0, 0);
+  outline: none;
+  border-radius: 50px;
+}
+
+/* ---------BAR STYLES------- */
+
+body {
+  overflow-x: hidden;
+  // background-color: #edebe4;
+  // rgb(248, 248, 248) original,matte white
+  //  background-color: #002200; //emeraude
+  // ------------
+  // ------------
+  // ------------
+  // ------------
+  background: #f2f2f2;
+  color: #424242;
+  position: relative;
+}
+// .page {
+//   display: flex;
+//   flex-wrap: wrap;
+// }
+
+.page-content {
+  margin: 500px 0;
+}
+#page-content {
+  padding: 400px 0;
+}
+.text-slider {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  pointer-events: none;
+
+  span {
+    position: fixed;
+    font-size: 90px;
+    font-weight: bold;
+    top: 50%;
+    transform: translate(calc(50vw - 50%), -50%);
+  }
+}
+
+.banner {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  background-color: #ded6cf;
+
+  width: 80vw;
+  height: 700px;
+
+  &.top {
+    top: 0;
+    transform: translate(-50%, 0);
+  }
+
+  &.bottom {
+    bottom: 0;
+    transform: translate(-50%, 0);
+  }
+}
+ 
