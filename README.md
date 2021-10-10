@@ -254,7 +254,7 @@ npm i react-redux
 
 > **What is React VS Redux?**
 > Redux manages state and state transformations and is often used with React, but React has its own concept of state. When using these libraries, it's good to know which to use when. Even if you choose to use Redux in your project, you will still need to make decisions on how much of your data is stored in Redux.
-> <br> > **Why Redux is bad?**
+> <br> **Why Redux is bad?**
 > What I Hate About Redux. If you use redux to develop your application, even small changes in functionality require you to write excessive amounts of code. This goes against the direct-mapping principle, which states that small functional changes should result in small code changes.
 
 <br>
@@ -262,6 +262,8 @@ npm i react-redux
 > **Redux is used by too many react developers without thinking twice! Applied mindlessly like that, redux does more harm than good!** I will show the fields in which redux shines and — most importantly — I will point out the situations in which redux is the wrong tool in my strong opinion.
 
 [Don’t use Redux!](https://orgler.medium.com/dont-use-redux-9e23b5381291)
+
+[<img src="/src/img/redux_funny.gif"/>](src/docs/delta-request-animation-frame.md)
 
 <br>
 <br>
@@ -739,4 +741,241 @@ class Home extends React.Component {
 }
 
 export default Home;
+```
+
+<br>
+<br>
+
+### Now we need to go back to the CanvasIndex.jsx
+
+> We will be working on:
+
+- SETTING UP THE CONTAINER
+- UPDATING THE SCROLL EFFECT (when the user scroll)
+
+<br>
+
+#### 1. First thing to do: ACCESS the Context
+
+> **Note:** i removed and changed a couple of things
+
+```javascript
+import React, { useContext, useRef } from "react";
+import { CurtainsContext } from "../store/reduxStore";
+// import { CurtainsContext } from "../store/reduxStore";
+
+export default function CanvasIndex() {
+  //
+  //
+  // related store REDUX
+  const { state, dispatch } = useContext(CurtainsContext);
+  //
+  //
+  const container = useRef();
+  //
+  //
+  return (
+    <div className="Canvas" ref={container}>
+      hello hhhhhhhhhhhhhhhh
+    </div>
+  );
+}
+```
+
+<br>
+
+### 2. Add the UseLayout Effect
+
+> **What is the useLayoutEffect**
+> The useLayoutEffect works similarly to useEffect but rather working asynchronously like useEffect hook, <u>it fires synchronously after all DOM loading is done loading.</u> This is useful for synchronously re-rendering the DOM and also to read the layout from the DOM.
+
+<br>
+
+#### uselayouteffect vs useEffect
+
+- useLayoutEffect is identical to useEffect, but it's major key difference is that **it gets triggered synchronously after all DOM mutation**. ... This hook is optimized, to allow the engineer to make changes to a DOM node directly before the browser has a chance to paint.
+
+<br>
+
+#### What runs first useEffect or useLayoutEffect?
+
+Even though the useLayoutEffect Hook is placed after the useEffect Hook, the useLayoutEffect Hook is triggered first!
+
+<br>
+<br>
+
+> 🔴 DEFAULT: you will have errors until you insert your own data
+
+```javascript
+import React, { useContext, useRef, useLayoutEffect } from "react";
+import { CurtainsContext } from "../store/reduxStore";
+// import { CurtainsContext } from "../store/reduxStore";
+
+export default function CanvasIndex() {
+  //
+  //
+  // related store REDUX
+  const { state, dispatch } = useContext(CurtainsContext);
+  //
+  // DEFAULT: you will have errors until you insert your own data
+  //
+  useLayoutEffect(() => {
+    effect;
+    return () => {
+      cleanup;
+    };
+  }, [input]);
+
+  //
+  //
+  const container = useRef();
+  //
+  //
+  return (
+    <div className="Canvas" ref={container}>
+      hello hhhhhhhhhhhhhhhh
+    </div>
+  );
+}
+```
+
+<br>
+<br>
+
+#### Modify and add certain things
+
+- change the position of the use **Ref={container}**
+- add the following to the useLayoutEffect: **[container, state, dispatch]);**
+
+- Get the curtains from the state const **const {curtains} = state;**
+- Check if the container is rendered
+
+<br>
+<br>
+
+```javascript
+import React, { useContext, useRef, useLayoutEffect } from "react";
+import { CurtainsContext } from "../store/reduxStore";
+// import { CurtainsContext } from "../store/reduxStore";
+
+export default function CanvasIndex() {
+  //
+  //1
+  const container = useRef();
+  //
+  //
+  //
+  //
+  // related store REDUX
+  const { state, dispatch } = useContext(CurtainsContext);
+  //
+  // DEFAULT: you will have errors until you insert your own data
+  //
+  useLayoutEffect(() => {
+    //3
+    const { curtains } = state;
+    //
+    //4
+    if (container.current && !curtains.container) {
+      // we will dispatch an action to the reducer
+    }
+    //
+    //
+    return () => {
+      cleanup;
+    };
+    // 2
+  }, [container, state, dispatch]);
+
+  //
+  //
+
+  //
+  //
+  return (
+    <div className="Canvas" ref={container}>
+      hello hhhhhhhhhhhhhhhh
+    </div>
+  );
+}
+```
+
+<br>
+<br>
+
+### Work on the "ACTION", pass the dispatch function (the one from the redux store)
+
+> If you check the reduxStore, "in the initialState", the curtains is an Object:
+
+```javascript
+const initialState = {
+  //1. here you are grabbing data from the curtains package and passing
+  //  it to the initialState, then it will be
+  // passed to the const CurtainsContext = React.createContext(initialState);
+  // and then to this: const { Provider } = CurtainsContext;
+  //
+  curtains: new Curtains({
+    pixelRatio: Math.min(1.5, window.devicePixelRatio), //default
+  }),
+  container: null, // is the element canvas
+  scrollEffect: 0, //default sroll position min:5:49 video: https://youtu.be/mkmKy0XURK4
+};
+```
+
+### so in the CanvasIndex.js we have to set the container to our **.Canvas**
+
+- set the container to our canvas: **curtains.setContainer(container.current);**
+
+- grab the el from the library and assign to it: **curtains.setContainer(container.current);**
+
+```javascript
+export default function CanvasIndex() {
+  //
+  //
+  const container = useRef();
+  //
+  //
+  //
+  //
+  // related store REDUX
+  const { state, dispatch } = useContext(CurtainsContext);
+  //
+  // DEFAULT: you will have errors until you insert your own data
+  //
+  useLayoutEffect(() => {
+    //
+    const { curtains } = state;
+    //
+    //
+    if (container.current && !curtains.container) {
+      // we will dispatch an action to the reducer
+
+      //here you are grabing the el from the library and assign to it
+      curtains.setContainer(container.current);
+      //
+      //
+      //
+      dispatch({
+        type: "SET_CURTAINS_CONTAINER",
+        payload: curtains.container,
+      });
+    }
+    //
+    //
+    return () => {
+      cleanup;
+    };
+  }, [container, state, dispatch]);
+
+  //
+  //
+
+  //
+  //
+  return (
+    <div className="Canvas" ref={container}>
+      hello hhhhhhhhhhhhhhhh
+    </div>
+  );
+}
 ```

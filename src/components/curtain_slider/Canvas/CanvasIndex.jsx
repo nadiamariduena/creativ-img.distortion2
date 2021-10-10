@@ -1,10 +1,48 @@
 import React, { useContext, useRef, useLayoutEffect } from "react";
+import { CurtainsContext } from "../store/reduxStore";
 // import { CurtainsContext } from "../store/reduxStore";
 
-const CanvasIndex = () => {
+export default function CanvasIndex() {
   //
   //
   const container = useRef();
+  //
+  //
+  //
+  //
+  // related store REDUX
+  const { state, dispatch } = useContext(CurtainsContext);
+  //
+  // DEFAULT: you will have errors until you insert your own data
+  //
+  useLayoutEffect(() => {
+    //
+    const { curtains } = state;
+    //
+    //
+    if (container.current && !curtains.container) {
+      // we will dispatch an action to the reducer
+
+      //here you are grabing the el from the library and assign to it
+      curtains.setContainer(container.current);
+      //
+      //
+      //
+      dispatch({
+        type: "SET_CURTAINS_CONTAINER",
+        payload: curtains.container,
+      });
+    }
+    //
+    //
+    return () => {
+      cleanup;
+    };
+  }, [container, state, dispatch]);
+
+  //
+  //
+
   //
   //
   return (
@@ -12,9 +50,7 @@ const CanvasIndex = () => {
       hello hhhhhhhhhhhhhhhh
     </div>
   );
-};
-
-export default CanvasIndex;
+}
 
 /*
 
