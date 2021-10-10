@@ -167,11 +167,46 @@ If the foreign content comes from an image obtained from either as HTMLCanvasEle
 
 <br>
 <br>
+<hr>
+<br>
+
+# 🍪
+
+### Import the curtains from the package curtains
+
+```javascript
+import React from "react";
+import { Curtains } from "curtainsjs";
+```
+
+#### To initialize it
+
+<br>
+
+```javascript
+const initialState = {
+  curtains: new Curtains({
+    pixelRatio: Math.min(1.5, window.devicePixelRatio),
+  }),
+  container: null,
+  scrollEffect: 0,
+};
+```
+
+<br>
+<br>
+<hr>
 <br>
 
 # Store | redux 🍪 🍫
 
-- install the following in case it doesnt work:
+## _the store in:_ REDUX
+
+> **A store is basically just a plain JavaScript object that allows components to share state**. In a way, we can think of **a store as a database**. On the most fundamental level, both constructs allow us to store data in some form or another.
+
+<br>
+
+#### Install the following in case it doesnt work:
 
 ```javascript
 npm i redux
@@ -202,10 +237,15 @@ npm i react-redux
 [Don’t use Redux!](https://orgler.medium.com/dont-use-redux-9e23b5381291)
 
 <br>
+<br>
 
 # The Provider
 
 #### 🔴 the provider will bring the store to all our components with the help of redux
+
+> Overview. The <Provider> component makes the Redux store available to any nested components that need to access the Redux store. **Since any React component in a React Redux app can be connected to the store, most applications will render a <Provider> at the top level, with the entire app's component tree inside of it.**
+
+<br>
 
 ```javascript
 import React from "react";
@@ -281,7 +321,9 @@ const { Provider } = CurtainsContext;
 // 4. You get the children from Props
 const CurtainsProvider = ({ children }) => {
   //
-  //6.
+  //
+  //6. the actual value of the provider
+  // the dispatch function comes from the reducer
   const [state, dispatch] = useReducer(() => {}, initialState);
 
   // 3. from this: const { Provider } = CurtainsContext;
@@ -292,6 +334,14 @@ export { CurtainsContext, CurtainsProvider };
 ```
 
 ###### 2.
+
+## Pass the _redux dispatch function_ 🥛
+
+#### What is Dispatch in redux?
+
+> Dispatch is a function of the Redux store. You call store. dispatch to dispatch an action. This is the only way to trigger a state change. With React Redux, your components never access the store directly - connect does it for you.
+
+<br>
 
 ```javascript
 // 5.
@@ -324,6 +374,7 @@ const CurtainsProvider = ({ children }) => {
   //
   //6. the actual value of the provider
   // the dispatch function comes from the reducer
+  //   THE DISPATCH
   const [state, dispatch] = useReducer(() => {}, initialState);
 
   // 3. from this: const { Provider } = CurtainsContext;
@@ -332,10 +383,170 @@ const CurtainsProvider = ({ children }) => {
 };
 ```
 
-###### 3. 
+ <br>
+ <br>
 
-#### Now we will set the container and the scroll effect
+# 🍪
+
+## Now we will <u>set the container and the scroll effect</u>
+
+- START by adding the REDUCER , then the SWITCH
+
+- the reducer: **useReducer((state, action)**
+
+> **The switch statement** is used to perform different actions based on different conditions.
+
+##### [The JavaScript Switch Statement](https://www.w3schools.com/js/js_switch.asp)
+
+<br>
+
+ <br>
 
 ```javascript
+// import React from "react";
+// 5.
+import React, { useReducer } from "react";
+import { Curtains } from "curtainsjs";
 
+const initialState = {
+  //1. here you are grabbing data from the curtains package and passing
+  //  it to the initialState, then it will be
+  // passed to the const CurtainsContext = React.createContext(initialState);
+  // and then to this: const { Provider } = CurtainsContext;
+  //
+  curtains: new Curtains({
+    pixelRatio: Math.min(1.5, window.devicePixelRatio), //default
+  }),
+  container: null, // is the element canvas
+  scrollEffect: 0, //default sroll position min:5:49 video: https://youtu.be/mkmKy0XURK4
+};
+//
+//
+//
+//2.  The following 2 lines will be passed to the canvas, plane and Home
+const CurtainsContext = React.createContext(initialState);
+//  THE PROVIDER
+const { Provider } = CurtainsContext;
+//
+//
+// 4. You get the children from Props
+const CurtainsProvider = ({ children }) => {
+  //
+  //6. the actual value of the provider
+  // the dispatch function comes from the reducer
+  //   THE DISPATCH
+  const [state, dispatch] = useReducer((state, action) => {
+    // 8. here the callback gives  "the current state and action"
+
+    //
+    // 9. default
+    switch (key) {
+      case value:
+        break;
+
+      default:
+        break;
+    }
+  }, initialState);
+
+  // 3. from this: const { Provider } = CurtainsContext;
+  return <Provider value={{ state, dispatch }}>{children}</Provider>;
+  // 7. pass the  values from the step 6. to the provider
+};
+export { CurtainsContext, CurtainsProvider };
+```
+
+<br>
+<br>
+
+#### What is action type in Redux?
+
+> **switch (action.type) {** Actions are the only source of information for the store as per Redux official documentation. It carries a payload of information from your application to store. As discussed earlier, actions are plain JavaScript object that must have a type attribute to indicate the type of action performed.
+
+<br>
+
+### What is action payload in Redux?
+
+> Payload is what is keyed ( the key value pairs ) in your actions and passed around between reducers in your redux application. For example - const someAction = { type: "Test", payload: {user: "Test User", age: 25}, } This is a generally accepted convention to have a type and a payload for an action
+
+<br>
+
+### What is an action payload?
+
+> While action types allow you tell your reducer what action it should take, the payload is the data that your reducer will use to update the state. This lesson shows you how to pass an action payload along with your action type to update the state.
+
+```javascript
+// import React from "react";
+// 5.
+import React, { useReducer } from "react";
+import { Curtains } from "curtainsjs";
+
+const initialState = {
+  //1. here you are grabbing data from the curtains package and passing
+  //  it to the initialState, then it will be
+  // passed to the const CurtainsContext = React.createContext(initialState);
+  // and then to this: const { Provider } = CurtainsContext;
+  //
+  curtains: new Curtains({
+    pixelRatio: Math.min(1.5, window.devicePixelRatio), //default
+  }),
+  container: null, // is the element canvas
+  scrollEffect: 0, //default sroll position min:5:49 video: https://youtu.be/mkmKy0XURK4
+};
+//
+//
+//
+//2.  The following 2 lines will be passed to the canvas, plane and Home
+const CurtainsContext = React.createContext(initialState);
+//  THE PROVIDER
+const { Provider } = CurtainsContext;
+//
+//
+// 4. You get the children from Props
+const CurtainsProvider = ({ children }) => {
+  //
+  //6. the actual value of the provider
+  // the dispatch function comes from the reducer
+  const [state, dispatch] = useReducer((state, action) => {
+    // 8. here the call back gives  "the current state and actions"
+
+    //
+    // 9. pass the action from step 8.
+    switch (action.type) {
+      case "SET_CURTAINS_CONTAINER":
+        return {
+          ...state,
+          container: action.payload,
+        };
+      // 10. to update the scroll effect
+      case "SET_SCROLL_EFFECT": {
+        return {
+          ...state,
+          scrollEffect: action.payload,
+        };
+      }
+
+      default:
+        throw new Error();
+      /*
+
+    The throw statement throws a 
+    user-defined exception. Execution 
+    of the current function will stop 
+    (the statements after throw won't be executed),
+    and control will be passed to the first catch 
+    block in the call stack. If no catch block exists
+    among caller functions, the program will terminate.
+    
+
+    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw
+    */
+    }
+  }, initialState);
+
+  // 3. from this: const { Provider } = CurtainsContext;
+  return <Provider value={{ state, dispatch }}>{children}</Provider>;
+  // 7. pass the  values from the step 6. to the provider
+};
+export { CurtainsContext, CurtainsProvider };
 ```

@@ -29,10 +29,34 @@ const CurtainsProvider = ({ children }) => {
   //
   //6. the actual value of the provider
   // the dispatch function comes from the reducer
-  const [state, dispatch] = useReducer(() => {}, initialState);
+  const [state, dispatch] = useReducer((state, action) => {
+    // 8. here the call back gives  "the current state and actions"
+
+    //
+    // 9. pass the action from step 8.
+    switch (action.type) {
+      case "SET_CURTAINS_CONTAINER":
+        return {
+          ...state,
+          container: action.payload,
+        };
+      // 10. to update the scroll effect
+      case "SET_SCROLL_EFFECT": {
+        return {
+          ...state,
+          scrollEffect: action.payload,
+        };
+      }
+
+      default:
+        throw new Error();
+
+      //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw
+    }
+  }, initialState);
 
   // 3. from this: const { Provider } = CurtainsContext;
-  return <Provider value={{state, dispatch}}>{children}</Provider>;
+  return <Provider value={{ state, dispatch }}>{children}</Provider>;
   // 7. pass the  values from the step 6. to the provider
 };
 export { CurtainsContext, CurtainsProvider };

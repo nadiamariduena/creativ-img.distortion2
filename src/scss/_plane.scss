@@ -21,6 +21,7 @@
     grid-template-columns: 8fr 2fr;
     .plane-details {
       order: 2;
+      // https://developer.mozilla.org/en-US/docs/Web/CSS/order
     }
     .plane-image {
       order: 1;
