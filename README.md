@@ -29,7 +29,13 @@ For that reason I decided to train my skills with another tutorial from the same
 > The follwing is required so that canvas js will know **what element needs to be animated / technical: get information and then get rendered with the help of WebGL into a canvas**
 
 ```javascript
-// before
+//
+//
+//
+//  ________________ before________________
+//
+//
+//
 <div className={`plane-container ${direction}`}>
   <div className="plane-details">
     <h6>/{title}</h6>
@@ -41,14 +47,21 @@ For that reason I decided to train my skills with another tutorial from the same
     <div className="image" style={{ backgroundColor: `url{${url}}` }} />
   </div>
 </div>;
-
-// after ________________************________________
+//
+//
+//
+//
+//
+//
+// after ________________after________________
+//
+//
+//
 //
 import React, { useContext, useRef, useLayoutEffect } from "react";
 
 const PlaneIndex = ({ url, title, index, description }) => {
-  //
-  //
+  // add a ref to the img div
   const planeEl = useRef();
 
   const direction = index % 2 === 0 ? "direct" : "reverse";
@@ -75,7 +88,13 @@ const PlaneIndex = ({ url, title, index, description }) => {
     </div>
   );
 };
-// scss _____________________ scss
+//
+//
+//
+//
+//
+//
+//                   scss _____________________ scss
 // before
   .plane-image {
     height: 90vh;
@@ -145,3 +164,178 @@ If the foreign content comes from an image obtained from either as HTMLCanvasEle
 [Cross-Origin Resource Sharing (CORS)](https://www.youtube.com/watch?v=af5RI6bLkyw)
 
 [How To Fix: "null has been blocked by CORS policy" Error in JavaScript AJAX](https://www.youtube.com/watch?v=nx8E5BF0XuE)
+
+<br>
+<br>
+<br>
+
+# Store | redux 🍪 🍫
+
+- install the following in case it doesnt work:
+
+```javascript
+npm i redux
+// and
+npm i react-redux
+
+```
+
+#### What is react REDUX and why do we need it?
+
+##### video : [React and Redux Use Provider to Connect Redux to React](https://www.youtube.com/watch?v=aEmG9nc8eLg)
+
+<u>React-redux are bindings between them</u>
+
+- Redux and React-redux. React-redux just provides bindings for Redux library to simplify working with Redux from React components.
+
+<br>
+
+> **What is React VS Redux?**
+> Redux manages state and state transformations and is often used with React, but React has its own concept of state. When using these libraries, it's good to know which to use when. Even if you choose to use Redux in your project, you will still need to make decisions on how much of your data is stored in Redux.
+> <br> > **Why Redux is bad?**
+> What I Hate About Redux. If you use redux to develop your application, even small changes in functionality require you to write excessive amounts of code. This goes against the direct-mapping principle, which states that small functional changes should result in small code changes.
+
+<br>
+
+> **Redux is used by too many react developers without thinking twice! Applied mindlessly like that, redux does more harm than good!** I will show the fields in which redux shines and — most importantly — I will point out the situations in which redux is the wrong tool in my strong opinion.
+
+[Don’t use Redux!](https://orgler.medium.com/dont-use-redux-9e23b5381291)
+
+<br>
+
+# The Provider
+
+#### 🔴 the provider will bring the store to all our components with the help of redux
+
+```javascript
+import React from "react";
+import { Curtains } from "curtainsjs";
+
+const initialState = {
+  //1. here you are grabbing data from the curtains package and passing
+  //  it to the initialState, then it will be
+  // passed to the const CurtainsContext = React.createContext(initialState);
+  // and then to this: const { Provider } = CurtainsContext;
+  //
+  curtains: new Curtains({
+    pixelRatio: Math.min(1.5, window.devicePixelRatio), //default
+  }),
+  container: null, // is the element canvas
+  scrollEffect: 0, //default sroll position min:5:49 video: https://youtu.be/mkmKy0XURK4
+};
+//
+//
+//
+//2.  The following 2 lines will be passed to the canvas, plane and Home
+const CurtainsContext = React.createContext(initialState);
+//  THE PROVIDER
+const { Provider } = CurtainsContext;
+//
+//
+// 4. You get the children from Props
+const CurtainsProvider = ({ children }) => {
+  //
+  //
+
+  // 3. from this: const { Provider } = CurtainsContext;
+  return <Provider value={{}}>{children}</Provider>;
+};
+
+export { CurtainsContext, CurtainsProvider };
+```
+
+<br>
+<br>
+
+# The Reducer 🥛 🍪
+
+###### 1.
+
+```javascript
+// import React from "react";
+// 5.
+import React, { useReducer } from "react";
+import { Curtains } from "curtainsjs";
+
+const initialState = {
+  //1. here you are grabbing data from the curtains package and passing
+  //  it to the initialState, then it will be
+  // passed to the const CurtainsContext = React.createContext(initialState);
+  // and then to this: const { Provider } = CurtainsContext;
+  //
+  curtains: new Curtains({
+    pixelRatio: Math.min(1.5, window.devicePixelRatio), //default
+  }),
+  container: null, // is the element canvas
+  scrollEffect: 0, //default sroll position min:5:49 video: https://youtu.be/mkmKy0XURK4
+};
+//
+//
+//
+//2.  The following 2 lines will be passed to the canvas, plane and Home
+const CurtainsContext = React.createContext(initialState);
+//  THE PROVIDER
+const { Provider } = CurtainsContext;
+//
+//
+// 4. You get the children from Props
+const CurtainsProvider = ({ children }) => {
+  //
+  //6.
+  const [state, dispatch] = useReducer(() => {}, initialState);
+
+  // 3. from this: const { Provider } = CurtainsContext;
+  return <Provider value={{}}>{children}</Provider>;
+};
+
+export { CurtainsContext, CurtainsProvider };
+```
+
+###### 2.
+
+```javascript
+// 5.
+import React, { useReducer } from "react";
+import { Curtains } from "curtainsjs";
+
+const initialState = {
+  //1. here you are grabbing data from the curtains package and passing
+  //  it to the initialState, then it will be
+  // passed to the const CurtainsContext = React.createContext(initialState);
+  // and then to this: const { Provider } = CurtainsContext;
+  //
+  curtains: new Curtains({
+    pixelRatio: Math.min(1.5, window.devicePixelRatio), //default
+  }),
+  container: null, // is the element canvas
+  scrollEffect: 0, //default sroll position min:5:49 video: https://youtu.be/mkmKy0XURK4
+};
+//
+//
+//
+//2.  The following 2 lines will be passed to the canvas, plane and Home
+const CurtainsContext = React.createContext(initialState);
+//  THE PROVIDER
+const { Provider } = CurtainsContext;
+//
+//
+// 4. You get the children from Props
+const CurtainsProvider = ({ children }) => {
+  //
+  //6. the actual value of the provider
+  // the dispatch function comes from the reducer
+  const [state, dispatch] = useReducer(() => {}, initialState);
+
+  // 3. from this: const { Provider } = CurtainsContext;
+  return <Provider value={{ state, dispatch }}>{children}</Provider>;
+  // 7. pass the  values from the step 6. to the provider
+};
+```
+
+###### 3. 
+
+#### Now we will set the container and the scroll effect
+
+```javascript
+
+```
