@@ -1255,25 +1255,37 @@ const newScrollEffect = curtains.lerp(
 <br>
 <br>
 
-# * times 🚀 Dichotomy Paradox
+# \* times 🚀 Dichotomy Paradox
 
 [<img src="/src/img/DichotomyParadox_times_explana.gif"/>](https://www.ted.com/talks/colm_kelleher_what_is_zeno_s_dichotomy_paradox/transcript?language=en#t-236201)
 
 > That which is in locomotion must arrive at the half-way stage before it arrives at the goal.
 > — as recounted by Aristotle, Physics VI:9, 239b10
 
- 
-
 <br>
  
 ### [What is Zeno's Dichotomy Paradox? | TED talks](https://www.ted.com/talks/colm_kelleher_what_is_zeno_s_dichotomy_paradox/transcript?language=en#t-236201)
-
 
 #### <u>Dichotomy paradox</u>
 
 - to use on the .onScroll(() => {
 
-- this will help to understand the use of (* times): delta.y _ 1.5,
+- this will help to understand the use of (\* times):
+
+  > delta.y \* 1.5,
+
+  <br>
+
+  #### the negative values
+
+  ```javascript
+  const delta = curtains.getScrollDeltas();
+  // now we set the delta in the y direction and the -y ,
+  // (because we need the opposite values when scrolling)
+  delta.y = -delta.y;
+  ```
+
+  [<img src="/src/img/delta_negativeValues.gif"/>](https://www.youtube.com/watch?v=X-4tIs00NvM)
 
 <br>
 
