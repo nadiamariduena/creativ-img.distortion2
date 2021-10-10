@@ -459,7 +459,7 @@ export { CurtainsContext, CurtainsProvider };
 <br>
 <br>
 
-#### What is action type in Redux?
+## What is action type in Redux?
 
 > **switch (action.type) {** Actions are the only source of information for the store as per Redux official documentation. It carries a payload of information from your application to store. As discussed earlier, actions are plain JavaScript object that must have a type attribute to indicate the type of action performed.
 
@@ -469,11 +469,20 @@ export { CurtainsContext, CurtainsProvider };
 
 > Payload is what is keyed ( the key value pairs ) in your actions and passed around between reducers in your redux application. For example - const someAction = { type: "Test", payload: {user: "Test User", age: 25}, } This is a generally accepted convention to have a type and a payload for an action
 
+#### Action #
+An action, is an object that contains the payload of information. They are the only source of information for the Redux store to be updated. Reducers update store based on the value of the action.type. Here we will define the action.type as ADD_TO_CART.
+
+>According to the official Redux documentation, actions are the only things that trigger changes in a Redux application, they contain the payload for changes to an application store. Actions are JavaScript objects that tell Redux the type of action to be performed, **usually they’re defined as functions like the one below**
+
+[How Redux Reducers Work](https://www.smashingmagazine.com/2020/12/how-redux-reducers-work/#:~:text=An%20action%2C%20is%20an%20object%20that%20contains%20the%20payload%20of%20information.&text=The%20code%20above%20is%20a,the%20state%20of%20the%20application.)
 <br>
 
 ### What is an action payload?
 
 > While action types allow you tell your reducer what action it should take, the payload is the data that your reducer will use to update the state. This lesson shows you how to pass an action payload along with your action type to update the state.
+  
+
+<br>
 
 ```javascript
 // import React from "react";
