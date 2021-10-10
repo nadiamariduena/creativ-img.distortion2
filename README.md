@@ -996,7 +996,9 @@ export default function CanvasIndex() {
 
 #### _LERP_ FUNCTION to ease and smoothing out a value (for the scroll effect)
 
-[Processing / p5.js Tutorial: What is lerp? (Linear Interpolation)](https://www.youtube.com/watch?v=8uLVnM36XUc)
+[Processing / p5.js Tutorial: What is lerp? (Linear Interpolation)](https://www.youtube.com/watch?v=8uLVnM36XUc) ⬅️
+
+<br>
 
 [Lerp function - Anmation javascript canvas ](https://www.youtube.com/watch?v=UGMyHSelK00)
 
@@ -1006,15 +1008,45 @@ export default function CanvasIndex() {
 
 [Easy Animations in Three.js React With Vector3 Lerp ](https://codeworkshop.dev/blog/2020-10-20-easy-animations-in-three-js-react-with-vector3-lerp/)
 
+<br>
+<br>
+
+# ☕
+
+## The following text doesn't seem related but believe me its, as if you want to do stuff with Threejs(WebGL) its the same.
+
+<br>
+
 #### Imagine you have an object in a 3D scene and you want to change the position.
 
-> That is pretty easy to do in React Three Fiber or ThreeJS. Just set the position attributes on the object and it will pop to the new location.
+- That is pretty easy to do in React Three Fiber or ThreeJS. Just set the position attributes on the object and it will pop to the new location.
+
+<br>
 
 ##### Now what if instead of the object popping immediately to the new position you want to animate it moving from the old position to the new position.
 
-> **You could implement this yourself or you could use the fantastically useful lerp method** which is on the Three.js Vector3 type. A Vector3 is a class that is used to represent most values which have x, y, and z coordinates in Three.js so you can use it to animate many object transforms like position, scale, or rotation. For this demonstration we will animate the position of a cube.
+<br>
+
+> **You could implement this yourself or you could use the fantastically useful lerp method**
+
+- Which is on the Three.js Vector3 type. A Vector3 is a class that is used to represent most values which have x, y, and z coordinates in Three.js so you can use it to animate many object transforms like position, scale, or rotation. For this demonstration we will animate the position of a cube.
+  > <br> The lerp method takes as its first argument another vector to interpolate towards, and a second argument called the alpha. You can think of the alpha as the speed at which the position should interpolate towards the new vector.
+
+[Easy Animations in Three.js React With Vector3 Lerp](https://codeworkshop.dev/blog/2020-10-20-easy-animations-in-three-js-react-with-vector3-lerp/)
+
+```javascript
+import * as THREE from "three";
+const vec = new THREE.Vector3();
+const vec2 = new THREE.Vector3();
+vec.lerp(vec2, 0.1);
+```
 
  <br>
+
+#### Lets continue ...
+
+> So this is what we have until now:
+
  <br>
 
 ```javascript
@@ -1086,9 +1118,9 @@ export default function CanvasIndex() {
 <br>
 <br>
 
-#### SET UP a new useRef
+## SET UP a new useRef
 
-- and assign it a previous value of the scroll effect
+- and assign it a 'previous value' of the scroll effect
 
 > const someRef = useRef({ scrollEffect: 0 });
 
@@ -1139,18 +1171,19 @@ export default function CanvasIndex() {
           // 0, 0.075   when we will stop scrolling the elements will stop moving "smoothly"
 
           someRef.current.scrollEffect = newScrollEffect;
-          //
+          // action: type
           dispatch({
             type: "SET_SCROLL_EFFECT",
             payload: newScrollEffect,
           });
-          //
+          //--------------------------
         });
 
       //
       //
       //
       dispatch({
+        //action: type
         type: "SET_CURTAINS_CONTAINER",
         payload: curtains.container,
       });
@@ -1171,7 +1204,12 @@ export default function CanvasIndex() {
 }
 ```
 
-#### The lerp method takes as its first argument another vector to interpolate towards, and a second argument called the alpha. You can think of the alpha as the speed at which the position should interpolate towards the new vector.
+<br>
+<br>
+
+### The Lerp method
+
+- Takes as its first argument another vector to interpolate towards, and a second argument called the alpha. You can think of the alpha as the speed at which the position should interpolate towards the new vector.
 
 ```javascript
 const newScrollEffect = curtains.lerp(
@@ -1192,7 +1230,7 @@ const newScrollEffect = curtains.lerp(
 
 ##### Read the article to understand the uses of DELTA and why its necessary in case of animations, its IMPORTANT!
 
-#### [delta for games](https://isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing)
+#### [Delta for games](https://isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing)
 
 [Loop forever and provide delta time](https://stackoverflow.com/questions/13996267/loop-forever-and-provide-delta-time)
 
@@ -1200,16 +1238,15 @@ const newScrollEffect = curtains.lerp(
 
 [stackoverflow question: gameloop using delta time](https://stackoverflow.com/questions/31998251/javascript-gameloop-using-delta-time)
 
->I have researched on requestAnimationFrame and none of the explenations seem to be useful. 
+> I have researched on requestAnimationFrame and none of the explenations seem to be useful.
 
 - requestAnimationFrame is a special timer. Unlike setInterval which executes the callback repeatedly after a given minimum of milliseconds, requestAnimationFrame executes variably to achieve smooth framerates.
 
->**The problem is how requestAnimationFrame achieves that. Depending on the situation, it may run faster or slower.** What this means is that if your update logic was tied to requestAnimationFrame directly, a character running at "one step per update" would travel 60 steps in one second when requestAnimationFrame is running at 60fps, but then would only do 40 when it throttles down to 40fps.
+> **The problem is how requestAnimationFrame achieves that. Depending on the situation, it may run faster or slower.** What this means is that if your update logic was tied to requestAnimationFrame directly, a character running at "one step per update" would travel 60 steps in one second when requestAnimationFrame is running at 60fps, but then would only do 40 when it throttles down to 40fps.
 
 - To counteract this sudden speed-up/slow-down of the timer, we use "delta time". Instead of depending on each iteration of requestAnimationFrame to call an update, you check the time between frames to see if it is the right time to call an update.
 
 - So lets say your character should do a step every 100ms. If the game ran at 60fps, 100ms is roughly every 6 frames. This means that for each iteration, your code checks to see if 100ms has elapsed. Around the 6th frame it does, and calls update. Now if the timer ran at 40fps, 100ms is around 4 frames. So same logic, on each iteration it checks if 100ms elapsed. At the 4th frame it does and calls update. With this, you are insured that update is consistently being called regardless of the fluctuations.
-
 
 <br>
 
