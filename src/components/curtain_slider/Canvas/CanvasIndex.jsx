@@ -31,11 +31,10 @@ export default function CanvasIndex() {
       // if something happens: we try to restore the contextwhen the canvas renders ???
       // confusing explanation from the youtuber
       // min: 14:22   https://youtu.be/mkmKy0XURK4
-      // 
-      // You will update the container in the function on the bottom,     
+      //
+      // You will update the container in the function on the bottom,
       // dispatch({});
-      
-    
+
       curtains
         .onContextLost(() => {
           curtains.restoreContext();
@@ -70,7 +69,28 @@ export default function CanvasIndex() {
           // now we set the delta in the y direction and the -y ,
           // (because we need the opposite values when scrolling)
           delta.y = -delta.y;
+          /*
 
+
+"We need to clamp the value of 
+the DELTA as it can be really big and really small"
+
+
+https://css-tricks.com/snippets/sass/clamping-number/
+
+*/
+          // threshold | CLAMP ***
+          if (delta.y > 60) {
+            delta.y = 60;
+          } else if (delta.y < -60) {
+            delta.y = -60;
+          }
+          /*
+
+
+
+
+*/
           //---*--  we will lerp again the values, this time you will ,
           // multiply the values, it has to do with the ftp (frames times per second)
           // another nice article:  https://stackoverflow.com/questions/43720669/lerp-with-time-deltatime
@@ -80,7 +100,7 @@ export default function CanvasIndex() {
             delta.y * 1.5,
             0.5
           );
-          // update/Dispatch the scroll 
+          // update/Dispatch the scroll
           someRef.current.scrollEffect = newScrollEffect;
           dispatch({
             type: "SET_SCROLL_EFFECT",
@@ -98,9 +118,22 @@ export default function CanvasIndex() {
     }
     //
     //
-    // return () => {
-    //   cleanup;
-    // };
+
+    // dispose curtains if we're unmounting the
+    // component (shouldn't ever happen)
+    return () => {
+      curtains.dispose();
+    };
+    /*
+
+ is an object method invoked to execute code
+  required for memory cleanup and release and 
+ reset unmanaged resources, such as file handles
+  and database connections
+*/
+    //
+    //
+    //
   }, [container, state, dispatch]);
 
   //

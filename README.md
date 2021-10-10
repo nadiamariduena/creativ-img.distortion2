@@ -22,7 +22,7 @@ Nicu Barbaros](https://github.com/nicubarbaros)** , for sharing this **Great tut
 
 #### The First time i tried to follow this tutorial i failed.
 
-For that reason I decided to train my skills with another [tutorial](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive) from the same youtuber, this time things worked differently. I structured the project in a different way before i started the lesson, so i did the same with this one, now i can finally see the project, of course with no animations on the images or the animated scroll, its a good thing because in my first try i had a blank page.
+For that reason I decided to develop my skills with another [tutorial](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive) from the same youtuber, this time things worked differently. I structured the project in a different way before i started the lesson, so i did the same with this one, now i can finally see the project, of course with no animations on the images or the animated scroll, its a good thing because in my first try i had a blank page.
 
 [skew-distortion-on-scroll-locomotive](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive)
 
@@ -227,9 +227,15 @@ const initialState = {
 
 # Store | redux 🍪 🍫
 
+<br>
+
+> **NOTE:** The reason why i care about explaining the redux here below, is not because i want to have some knowledge, but because i am planning to create a shop after 1 more tutorial with another scroll, and it will be a M.E.R.N one so the faster i get to understand it the better/easier it will be.
+
+<br>
+
 ## _the store in:_ REDUX
 
-> **A store is basically just a plain JavaScript object that allows components to share state**. In a way, we can think of **a store as a database**. On the most fundamental level, both constructs allow us to store data in some form or another.
+- **A store is basically just a plain JavaScript object that allows components to share state**. In a way, we can think of **a store as a database**. On the most fundamental level, both constructs allow us to store data in some form or another.
 
 <br>
 
@@ -1323,3 +1329,226 @@ const newScrollEffect = curtains.lerp(
           //  DELTA ** ///
         });
 ```
+
+<br>
+<br>
+
+# Clamp the value
+
+> **In computer science, we use the word clamp as a way to restrict a number between two other numbers**. When clamped, a number will either keep its own value if living in the range imposed by the two other values, take the lower value if initially lower than it, or the higher one if initially higher than it.
+
+##### As a quick example before going any further: [Clamping a Number](https://css-tricks.com/snippets/sass/clamping-number/)
+
+<br>
+
+- In the tutorial
+
+[clamp the value: 18:40](https://youtu.be/mkmKy0XURK4)
+
+##### "We need to clamp the value of the DELTA as it can be really big and really small"
+
+> He is making reference to the scrolling strength to the y and -y direction
+
+<br>
+
+```javascript
+//
+if (container.current && !curtains.container) {
+  // we will dispatch an action to the reducer
+
+  //here you are grabing the el from the library and assign to it
+  curtains.setContainer(container.current);
+  //
+  // Now we will listen few functions for the library, so that
+  // if something happens: we try to restore the contextwhen the canvas renders ???
+  // confusing explanation from the youtuber
+  // min: 14:22   https://youtu.be/mkmKy0XURK4
+  //
+  // You will update the container in the function on the bottom,
+  // dispatch({});
+
+  curtains
+    .onContextLost(() => {
+      curtains.restoreContext();
+    })
+    .onRender(() => {
+      //L . E . R . P
+      //When the canvas render we have a scroll effect
+      //   BUT FIRST SET UP the new useRef
+      const newScrollEffect = curtains.lerp(
+        someRef.current.scrollEffect,
+        0,
+        0.075
+      );
+      // 0, 0.075   when we will stop scrolling the elements will stop moving "smoothly"
+
+      someRef.current.scrollEffect = newScrollEffect;
+      //
+      dispatch({
+        type: "SET_SCROLL_EFFECT",
+        payload: newScrollEffect,
+      });
+      //
+    })
+    .onScroll(() => {
+      // this callback we will use to update the scroll effect, when
+      // the canvas is scrolled by the user.
+      // we will need to get the delta
+
+      // DELTA ** ///
+
+      const delta = curtains.getScrollDeltas();
+      // now we set the delta in the y direction and the -y ,
+      // (because we need the opposite values when scrolling)
+      delta.y = -delta.y;
+      /*
+CLAMP ***
+
+"We need to clamp the value of 
+the DELTA as it can be really big and really small"
+
+
+https://css-tricks.com/snippets/sass/clamping-number/
+
+*/
+      // threshold | CLAMP ***
+      if (delta.y > 60) {
+        delta.y = 60;
+      } else if (delta.y < -60) {
+        delta.y = -60;
+      }
+      /*
+
+
+
+
+*/
+      //---*--  we will lerp again the values, this time you will ,
+      // multiply the values, it has to do with the ftp (frames times per second)
+      // another nice article:  https://stackoverflow.com/questions/43720669/lerp-with-time-deltatime
+
+      const newScrollEffect = curtains.lerp(
+        someRef.current.scrollEffect,
+        delta.y * 1.5,
+        0.5
+      );
+      // update/Dispatch the scroll
+      someRef.current.scrollEffect = newScrollEffect;
+      dispatch({
+        type: "SET_SCROLL_EFFECT",
+        payload: newScrollEffect,
+      });
+      //  DELTA ** ///
+    });
+  //
+  //
+  //update/Dispatch the container from the top
+  dispatch({
+    type: "SET_CURTAINS_CONTAINER",
+    payload: curtains.container,
+  });
+}
+```
+
+#### UNHIDE THE RETURN:
+
+- from here below:
+
+```javascript
+          //  DELTA ** ///
+        });
+      //
+      //
+      //update/Dispatch the container from the top
+      dispatch({
+        type: "SET_CURTAINS_CONTAINER",
+        payload: curtains.container,
+      });
+    }
+    //
+    //
+    // return () => {
+    //   cleanup;
+    // };
+  }, [container, state, dispatch]);
+
+  //
+  //
+
+  //
+```
+
+### And add the following:
+
+```javascript
+// dispose curtains if we're unmounting the component (shouldn't ever happen)
+return () => {
+  curtains.dispose();
+};
+```
+
+<br>
+
+# dispose();
+
+> In the context of C#, **dispose is an object method invoked to execute code required for memory cleanup and release and reset unmanaged resources**, such as file handles and database connections. ... The Dispose method, provided by the IDisposable interface, implements Dispose calls.
+
+In my Threejs Scenes I will use it like this:
+
+> If I want to use an image as material, I must to think about to kill the re rendering, so if you have many you can imagine what can happen, the scene will probably not be seen due to heavy performance.
+
+```javascript
+//Here is the image
+this.bodyCroco = this.loaderImg.load("./img/medium_smallSquaresCroco____.png");
+//  Here is the material, the image is inside of it
+
+this.crocoMatPhysical = new THREE.MeshPhysicalMaterial({
+  emissive: 0x000000,
+  flatShading: false,
+  roughness: 0,
+  side: THREE.DoubleSide,
+  map: this.bodyCroco,
+  reflectivity: 1,
+});
+```
+
+<br>
+
+### Heavy performance ⚠️
+
+#### For the <u>disposing</u> you can do it either in the Mesh where you are using it or in the <u>componentWillUnmount(){}</u>
+
+- I like to do it in componentWillUnmount(){}, as its more organized, and i can put all the stuff I want to dispose() there instead of having it all in the mesh:
+
+```javascript
+this.bodyCroco.dispose();
+this.crocoMatPhysical.dispose();
+```
+
+<br>
+
+##### One of the things i don't understand, is that it works but for one element: ( RectAreaLightUniformsLib) it worked differently ,(how i know it works?: my computer stops overheating.
+
+> The First time i came across the dispose() method was just by curiosity, when looking to solve another issue related to my threejs scene (few months ago), i fell upon that dispose() in one piece of code by someone else, for me it was a mystery as it was the first time i saw the dispose() on the bottom of a mesh. After researching, i figure it out it had to do with 'better performance', **so i thought what if i add this to the componentWillUnmount(){} instead of the mesh?**
+
+<br>
+
+[<img src="/src/img/overheating_dispose1.gif"/>]()
+
+<br>
+
+#### [How to reduce CPU usage? (overheating)](https://discourse.threejs.org/t/how-to-reduce-cpu-usage-overheating/26016)
+
+- So for all the materials work perfectly in componentWillUnmount(){} but for a particular light, works in the componentDidMount() {
+
+```javascript
+componentDidMount() {
+    this.sceneSetup();
+    this.addCustomSceneObjects();
+    RectAreaLightUniformsLib.init();
+```
+
+<br>
+<br>
+
+#### BACK to the project DISPOSE()
