@@ -6,7 +6,8 @@ export default function CanvasIndex() {
   //
   //
   const container = useRef();
-  //
+  //L . E . R . P related
+  const someRef = useRef({ scrollEffect: 0 });
   //
   //
   //
@@ -26,6 +27,40 @@ export default function CanvasIndex() {
       //here you are grabing the el from the library and assign to it
       curtains.setContainer(container.current);
       //
+      // Now we will listen few functions for the library, so that
+      // if something happens: we try to restore the contextwhen the canvas renders ???
+      // confusing explanation from the youtuber
+      // min: 14:22   https://youtu.be/mkmKy0XURK4
+      //
+      curtains
+        .onContextLost(() => {
+          curtains.restoreContext();
+        })
+        .onRender(() => {
+          //L . E . R . P
+          //When the canvas render we have a scroll effect
+          //   BUT FIRST SET UP the new useRef
+          const newScrollEffect = curtains.lerp(
+            someRef.current.scrollEffect,
+            0,
+            0.075
+          );
+          // 0, 0.075   when we will stop scrolling the elements will stop moving "smoothly"
+
+          someRef.current.scrollEffect = newScrollEffect;
+          //
+          dispatch({
+            type: "SET_SCROLL_EFFECT",
+            payload: newScrollEffect,
+          });
+          //
+        })
+        .onScroll(() => {
+          // this callback we will use to update the scroll effect, when
+          // the canvas is scrolled by the user.
+          // we will need to get the delta
+        });
+      //
       //
       //
       dispatch({
@@ -35,9 +70,9 @@ export default function CanvasIndex() {
     }
     //
     //
-    return () => {
-      cleanup;
-    };
+    // return () => {
+    //   cleanup;
+    // };
   }, [container, state, dispatch]);
 
   //

@@ -604,7 +604,7 @@ export { CurtainsContext, CurtainsProvider };
 
 ### **Go to:** Home.js: and <u>Wrap the following data inside the Provider:</u>
 
-#### While there add the following:
+#### While there, add the following:
 
 > We will access the context we worked inside the **reduxStore.js**
 
@@ -926,7 +926,7 @@ const initialState = {
 
 - set the container to our canvas: **curtains.setContainer(container.current);**
 
-- grab the el from the library and assign to it: **curtains.setContainer(container.current);**
+- grab the **curtains.setContainer** from the library and assign the element: **curtains.setContainer(container.current);**
 
 ```javascript
 export default function CanvasIndex() {
@@ -979,3 +979,238 @@ export default function CanvasIndex() {
   );
 }
 ```
+
+<br>
+
+# LERP
+
+#### 🔺 Now we will listen few functions for the library | This will give smoothness to the scroll ans also that kind of bouncing back of the scroll when the user stops scrolling
+
+> more or less like this
+
+[<img src="/src/img/lerp_preview.gif"/>](https://stackoverflow.com/questions/50514712/smooth-lerping-through-list-of-vector3s/50515902)
+
+[Smooth lerping through list of vector3's](https://stackoverflow.com/questions/50514712/smooth-lerping-through-list-of-vector3s/50515902)
+
+### But what is Lerp?
+
+#### _LERP_ FUNCTION to ease and smoothing out a value (for the scroll effect)
+
+[Processing / p5.js Tutorial: What is lerp? (Linear Interpolation)](https://www.youtube.com/watch?v=8uLVnM36XUc)
+
+[Lerp function - Anmation javascript canvas ](https://www.youtube.com/watch?v=UGMyHSelK00)
+
+[Modulating values with Lerp - Unity Official Tutorials ](https://www.youtube.com/watch?v=cD-mXwSCvWc)
+
+<br>
+
+[Easy Animations in Three.js React With Vector3 Lerp ](https://codeworkshop.dev/blog/2020-10-20-easy-animations-in-three-js-react-with-vector3-lerp/)
+
+#### Imagine you have an object in a 3D scene and you want to change the position.
+
+> That is pretty easy to do in React Three Fiber or ThreeJS. Just set the position attributes on the object and it will pop to the new location.
+
+##### Now what if instead of the object popping immediately to the new position you want to animate it moving from the old position to the new position.
+
+> **You could implement this yourself or you could use the fantastically useful lerp method** which is on the Three.js Vector3 type. A Vector3 is a class that is used to represent most values which have x, y, and z coordinates in Three.js so you can use it to animate many object transforms like position, scale, or rotation. For this demonstration we will animate the position of a cube.
+
+ <br>
+ <br>
+
+```javascript
+export default function CanvasIndex() {
+  //
+  //
+  const container = useRef();
+  //
+  //
+  //
+  //
+  // related store REDUX
+  const { state, dispatch } = useContext(CurtainsContext);
+  //
+  // DEFAULT: you will have errors until you insert your own data
+  //
+  useLayoutEffect(() => {
+    //
+    const { curtains } = state;
+    //
+    //
+    if (container.current && !curtains.container) {
+      // we will dispatch an action to the reducer
+
+      //here you are grabing the el from the library and assign to it
+      curtains.setContainer(container.current);
+      //
+      // Now we will listen few functions for the library, so that
+      // if something happens: we try to restore the contextwhen the canvas renders ???
+      // confusing explanation from the youtuber
+      // min: 14:22   https://youtu.be/mkmKy0XURK4
+      //
+      curtains
+        .onContextLost(() => {
+          curtains.restoreContext();
+        }) //L . E . R . P
+        .onRender(() => {
+          //When the canvas render we have a scroll effect
+          //   BUT FIRST SET UP the new useRef
+        });
+      //
+      //
+      //
+      dispatch({
+        type: "SET_CURTAINS_CONTAINER",
+        payload: curtains.container,
+      });
+    }
+    //
+    //
+    return () => {
+      cleanup;
+    };
+  }, [container, state, dispatch]);
+
+  //
+  //
+
+  //
+  //
+  return (
+    <div className="Canvas" ref={container}>
+      hello hhhhhhhhhhhhhhhh
+    </div>
+  );
+}
+```
+
+<br>
+<br>
+
+#### SET UP a new useRef
+
+- and assign it a previous value of the scroll effect
+
+> const someRef = useRef({ scrollEffect: 0 });
+
+```javascript
+export default function CanvasIndex() {
+  //
+  //
+  const container = useRef();
+  //L . E . R . P related
+  const someRef = useRef({ scrollEffect: 0 });
+  //
+  //
+  //
+  // related store REDUX
+  const { state, dispatch } = useContext(CurtainsContext);
+  //
+  // DEFAULT: you will have errors until you insert your own data
+  //
+  useLayoutEffect(() => {
+    //
+    const { curtains } = state;
+    //
+    //
+    if (container.current && !curtains.container) {
+      // we will dispatch an action to the reducer
+
+      //here you are grabing the el from the library and assign to it
+      curtains.setContainer(container.current);
+      //
+      // Now we will listen few functions for the library, so that
+      // if something happens: we try to restore the contextwhen the canvas renders ???
+      // confusing explanation from the youtuber
+      // min: 14:22   https://youtu.be/mkmKy0XURK4
+      //
+      curtains
+        .onContextLost(() => {
+          curtains.restoreContext();
+        })
+        .onRender(() => {
+          //L . E . R . P  -----------
+          //When the canvas render we have a scroll effect
+          //   BUT FIRST SET UP the new useRef
+          const newScrollEffect = curtains.lerp(
+            someRef.current.scrollEffect,
+            0,
+            0.075
+          );
+          // 0, 0.075   when we will stop scrolling the elements will stop moving "smoothly"
+
+          someRef.current.scrollEffect = newScrollEffect;
+          //
+          dispatch({
+            type: "SET_SCROLL_EFFECT",
+            payload: newScrollEffect,
+          });
+          //
+        });
+
+      //
+      //
+      //
+      dispatch({
+        type: "SET_CURTAINS_CONTAINER",
+        payload: curtains.container,
+      });
+    }
+    //
+    // to stop the error , until we reach this area
+    // return () => {
+    //   cleanup;
+    // };
+  }, [container, state, dispatch]);
+
+  //
+  return (
+    <div className="Canvas" ref={container}>
+      hello hhhhhhhhhhhhhhhh
+    </div>
+  );
+}
+```
+
+#### The lerp method takes as its first argument another vector to interpolate towards, and a second argument called the alpha. You can think of the alpha as the speed at which the position should interpolate towards the new vector.
+
+```javascript
+const newScrollEffect = curtains.lerp(
+  someRef.current.scrollEffect,
+  // when we will stop scrolling the elements will stop moving SMOOTHLY
+
+  0,
+  0.075
+);
+```
+
+<br>
+<br>
+
+## DELTA 🍨
+
+### <u>Delta is great for consistency of the update method . You don't want your movement to be influenced by the framerate.</u>
+
+##### Read the article to understand the uses of DELTA and why its necessary in case of animations, its IMPORTANT!
+
+#### [delta for games](https://isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing)
+
+[Loop forever and provide delta time](https://stackoverflow.com/questions/13996267/loop-forever-and-provide-delta-time)
+
+##### gameloop using delta time
+
+[stackoverflow question: gameloop using delta time](https://stackoverflow.com/questions/31998251/javascript-gameloop-using-delta-time)
+
+>I have researched on requestAnimationFrame and none of the explenations seem to be useful. 
+
+- requestAnimationFrame is a special timer. Unlike setInterval which executes the callback repeatedly after a given minimum of milliseconds, requestAnimationFrame executes variably to achieve smooth framerates.
+
+>**The problem is how requestAnimationFrame achieves that. Depending on the situation, it may run faster or slower.** What this means is that if your update logic was tied to requestAnimationFrame directly, a character running at "one step per update" would travel 60 steps in one second when requestAnimationFrame is running at 60fps, but then would only do 40 when it throttles down to 40fps.
+
+- To counteract this sudden speed-up/slow-down of the timer, we use "delta time". Instead of depending on each iteration of requestAnimationFrame to call an update, you check the time between frames to see if it is the right time to call an update.
+
+- So lets say your character should do a step every 100ms. If the game ran at 60fps, 100ms is roughly every 6 frames. This means that for each iteration, your code checks to see if 100ms has elapsed. Around the 6th frame it does, and calls update. Now if the timer ran at 40fps, 100ms is around 4 frames. So same logic, on each iteration it checks if 100ms elapsed. At the 4th frame it does and calls update. With this, you are insured that update is consistently being called regardless of the fluctuations.
+
+
+<br>
+
+#### [Using requestAnimationFrame with React Hooks](src/docs/delta-request-animation-frame.md)
