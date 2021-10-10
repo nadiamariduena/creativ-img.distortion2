@@ -1,3 +1,17 @@
+# 🍌
+
+# CREDITS:
+
+Big thanks to **[
+Nicu Barbaros](https://github.com/nicubarbaros)** , for sharing this **Great tutorial** on how to get started with Locomotive scroll and canvas/WebGl.
+
+<br>
+<br>
+
+## Creative Agency Style Image Distortion Effect With Curtains.js & React
+
+> Curtains.js was created with just that issue in mind. It is a small vanilla WebGL javascript library that converts HTML elements containing images, videos and canvases into 3D WebGL textured planes, allowing you to animate them via shaders.
+
 # SECOND TEST 🍌
 
 <br>
@@ -6,6 +20,8 @@
 #### The First time i tried to follow this tutorial i failed.
 
 For that reason I decided to train my skills with another tutorial from the same youtuber, this time things worked differently. I structured the project in a different way before i started the lesson, so i did the same with this one, now i can finally see the project, of course with no animations on the images or the animated scroll, its a good thing because in my first try i had a blank page.
+
+[skew-distortion-on-scroll-locomotive](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive)
 
 <br>
 <br>
@@ -122,10 +138,18 @@ const PlaneIndex = ({ url, title, index, description }) => {
 ```
 
 <br>
+
+#### I never added "order" to the grids and i think i find it interesting, i will definitely invest some time to see what else i can do with it.
+
+[<img src="/src/img/grid_order_css_styles.gif"/>](src/docs/delta-request-animation-frame.md)
+
+<br>
 <br>
 <br>
 
-# crossOrigin="anonymous"
+```javascript
+crossOrigin = "anonymous";
+```
 
 ## 🔺 Security and tainted canvases 🔺
 
@@ -469,10 +493,11 @@ export { CurtainsContext, CurtainsProvider };
 
 > Payload is what is keyed ( the key value pairs ) in your actions and passed around between reducers in your redux application. For example - const someAction = { type: "Test", payload: {user: "Test User", age: 25}, } This is a generally accepted convention to have a type and a payload for an action
 
-#### Action #
+#### Action
+
 An action, is an object that contains the payload of information. They are the only source of information for the Redux store to be updated. Reducers update store based on the value of the action.type. Here we will define the action.type as ADD_TO_CART.
 
->According to the official Redux documentation, actions are the only things that trigger changes in a Redux application, they contain the payload for changes to an application store. Actions are JavaScript objects that tell Redux the type of action to be performed, **usually they’re defined as functions like the one below**
+> According to the official Redux documentation, actions are the only things that trigger changes in a Redux application, they contain the payload for changes to an application store. Actions are JavaScript objects that tell Redux the type of action to be performed, **usually they’re defined as functions like the one below**
 
 [How Redux Reducers Work](https://www.smashingmagazine.com/2020/12/how-redux-reducers-work/#:~:text=An%20action%2C%20is%20an%20object%20that%20contains%20the%20payload%20of%20information.&text=The%20code%20above%20is%20a,the%20state%20of%20the%20application.)
 <br>
@@ -480,7 +505,6 @@ An action, is an object that contains the payload of information. They are the o
 ### What is an action payload?
 
 > While action types allow you tell your reducer what action it should take, the payload is the data that your reducer will use to update the state. This lesson shows you how to pass an action payload along with your action type to update the state.
-  
 
 <br>
 
@@ -558,4 +582,158 @@ const CurtainsProvider = ({ children }) => {
   // 7. pass the  values from the step 6. to the provider
 };
 export { CurtainsContext, CurtainsProvider };
+```
+
+<br>
+<br>
+
+# Export the store data
+
+### As we read in the previous steps... 🥛
+
+- 🍌 the provider will bring the store to all our components with the help of redux
+
+> Overview. The <Provider> component makes the Redux store available to any nested components that need to access the Redux store. **Since any React component in a React Redux app can be connected to the store, most applications will render a <Provider> at the top level, with the entire app's component tree inside of it.**
+
+<br>
+
+### **Go to:** Home.js: and <u>Wrap the following data inside the Provider:</u>
+
+#### While there add the following:
+
+> We will access the context we worked inside the **reduxStore.js**
+
+```javascript
+import React from "react";
+// the images
+import photoData from "./photoData";
+import { CurtainsProvider } from "./store/reduxStore";
+
+//
+import Canvas from "./Canvas/CanvasIndex";
+import Plane from "./Plane/PlaneIndex";
+
+const Home = () => {
+  return (
+    //
+    // related store REDUX
+    <CurtainsProvider>
+      // // PROVIDER WRAPPING *** //
+      <div className="banner top" />
+      <div id="page-content">
+        {photoData.map(({ url, title, description }, index) => (
+          <Plane
+            key={url}
+            index={index}
+            url={url}
+            title={title}
+            description={description}
+          />
+        ))}
+      </div>
+      <Canvas />
+      <div className="banner bottom" />
+      // // PROVIDER WRAPPING ***
+    </CurtainsProvider>
+  );
+};
+
+export default Home;
+```
+
+<br>
+
+### <u>Go to the Canvas folder</u> and open the index.jsx: , add the useRef and check if its correctly set up to export to the Home.js
+
+<br>
+
+```javascript
+import React, { useRef } from "react";
+
+export default function Canvas() {
+  //
+  //
+  const container = useRef();
+  //
+  //
+  return <div className="Canvas" ref={container}></div>;
+}
+```
+
+<br>
+
+- I added an **opacity to a pink BG** so to see where i am, also the text
+
+[<img src="/src/img/canvas_1.gif"/>](src/docs/delta-request-animation-frame.md)
+
+<br>
+
+#### I DECIDED to change the component from functional component to a class component
+
+> **THE REASON**
+
+- I get an error when i try to put in place something instead of something else:
+
+```javascript
+// This is the original code that works for the youtuve video
+// STRANGELY dont work for me
+import Plane from "./Plane";
+import Canvas from "./Canvas";
+// This code works
+import Canvas from "./Canvas/CanvasIndex";
+import Plane from "./Plane/PlaneIndex";
+```
+
+- I tried to change the name of the file inside the Canvas exactly as he did but nothing, i think its maybe due to certain packages he has.(some prettifiers, less etc)
+
+<br>
+
+### This is how it looks now
+
+<br>
+
+```javascript
+import React, { useEffect } from "react";
+
+//
+// the images
+import photoData from "./photoData";
+import { CurtainsProvider } from "./store/reduxStore";
+
+//
+import Canvas from "./Canvas/CanvasIndex";
+import Plane from "./Plane/PlaneIndex";
+
+class Home extends React.Component {
+  render() {
+    return (
+      <CurtainsProvider>
+        {/* 
+  
+  */}
+        <div className="banner top" />
+        <div id="page-content">
+          {photoData.map(({ url, title, description }, index) => (
+            <Plane
+              key={url}
+              index={index}
+              url={url}
+              title={title}
+              description={description}
+            />
+          ))}
+        </div>
+
+        <Canvas />
+
+        <div className="banner bottom" />
+        {/* 
+  
+  */}
+      </CurtainsProvider>
+    );
+  }
+}
+
+export default Home;
 ```

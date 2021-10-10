@@ -1,16 +1,33 @@
 import React, { useContext, useRef, useLayoutEffect } from "react";
-import { CurtainsContext } from "../store/reduxStore";
+// import { CurtainsContext } from "../store/reduxStore";
 
 const CanvasIndex = () => {
   //
+  //
   const container = useRef();
   //
-  return <div className="Canvas"></div>;
+  //
+  return (
+    <div className="Canvas" ref={container}>
+      hello hhhhhhhhhhhhhhhh
+    </div>
+  );
 };
 
 export default CanvasIndex;
 
 /*
+
+
+
+
+
+
+
+
+
+
+
 
 
 

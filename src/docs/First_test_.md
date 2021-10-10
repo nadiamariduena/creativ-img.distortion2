@@ -421,9 +421,9 @@ const CurtainsProvider = ({ children }) => {
 <br>
 <hr>
 
-### NOW EXPORT THE ABOVE DATA to the Canvas > index.jsx
+### go to the Canvas 
 
-> **go to the** Canvas folder and open the index.jsx:
+> **go to the** Canvas folder and open the index.jsx: , add the useRef and check if its correctly set up to export to the Home.js
 
 ```javascript
 import React, { useRef } from "react";
