@@ -1250,4 +1250,64 @@ const newScrollEffect = curtains.lerp(
 
 <br>
 
-#### [Using requestAnimationFrame with React Hooks](src/docs/delta-request-animation-frame.md)
+##### [Using requestAnimationFrame with React Hooks](src/docs/delta-request-animation-frame.md)
+
+<br>
+<br>
+
+# * times 🚀 Dichotomy Paradox
+
+[<img src="/src/img/DichotomyParadox_times_explana.gif"/>](https://www.ted.com/talks/colm_kelleher_what_is_zeno_s_dichotomy_paradox/transcript?language=en#t-236201)
+
+> That which is in locomotion must arrive at the half-way stage before it arrives at the goal.
+> — as recounted by Aristotle, Physics VI:9, 239b10
+
+ 
+
+<br>
+ 
+### [What is Zeno's Dichotomy Paradox? | TED talks](https://www.ted.com/talks/colm_kelleher_what_is_zeno_s_dichotomy_paradox/transcript?language=en#t-236201)
+
+
+#### <u>Dichotomy paradox</u>
+
+- to use on the .onScroll(() => {
+
+- this will help to understand the use of (* times): delta.y _ 1.5,
+
+<br>
+
+```javascript
+        .onRender(() => {
+                //       DATA HERE - read the code above
+        })
+        .onScroll(() => {
+          // this callback we will use to update the scroll effect, when
+          // the canvas is scrolled by the user.
+          // we will need to get the delta
+
+          // DELTA ** ///
+
+          const delta = curtains.getScrollDeltas();
+          // now we set the delta in the y direction and the -y ,
+          // (because we need the opposite values when scrolling)
+          delta.y = -delta.y;
+
+          //---*-- BELOW:  we will lerp again the values, this time you will ,
+          // multiply the values, it has to do with the ftp (frames times per second) or some complicated stuff related to the bouncing back
+          // another nice article:  https://stackoverflow.com/questions/43720669/lerp-with-time-deltatime
+
+          const newScrollEffect = curtains.lerp(
+            someRef.current.scrollEffect,
+            delta.y * 1.5,
+            0.5
+          );
+          // update/Dispatch the scroll
+          someRef.current.scrollEffect = newScrollEffect;
+          dispatch({
+            type: "SET_SCROLL_EFFECT",
+            payload: newScrollEffect,
+          });
+          //  DELTA ** ///
+        });
+```

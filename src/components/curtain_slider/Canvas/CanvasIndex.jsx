@@ -31,7 +31,11 @@ export default function CanvasIndex() {
       // if something happens: we try to restore the contextwhen the canvas renders ???
       // confusing explanation from the youtuber
       // min: 14:22   https://youtu.be/mkmKy0XURK4
-      //
+      // 
+      // You will update the container in the function on the bottom,     
+      // dispatch({});
+      
+    
       curtains
         .onContextLost(() => {
           curtains.restoreContext();
@@ -59,10 +63,34 @@ export default function CanvasIndex() {
           // this callback we will use to update the scroll effect, when
           // the canvas is scrolled by the user.
           // we will need to get the delta
+
+          // DELTA ** ///
+
+          const delta = curtains.getScrollDeltas();
+          // now we set the delta in the y direction and the -y ,
+          // (because we need the opposite values when scrolling)
+          delta.y = -delta.y;
+
+          //---*--  we will lerp again the values, this time you will ,
+          // multiply the values, it has to do with the ftp (frames times per second)
+          // another nice article:  https://stackoverflow.com/questions/43720669/lerp-with-time-deltatime
+
+          const newScrollEffect = curtains.lerp(
+            someRef.current.scrollEffect,
+            delta.y * 1.5,
+            0.5
+          );
+          // update/Dispatch the scroll 
+          someRef.current.scrollEffect = newScrollEffect;
+          dispatch({
+            type: "SET_SCROLL_EFFECT",
+            payload: newScrollEffect,
+          });
+          //  DELTA ** ///
         });
       //
       //
-      //
+      //update/Dispatch the container from the top
       dispatch({
         type: "SET_CURTAINS_CONTAINER",
         payload: curtains.container,
