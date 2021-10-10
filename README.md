@@ -6,20 +6,23 @@ Big thanks to **[
 Nicu Barbaros](https://github.com/nicubarbaros)** , for sharing this **Great tutorial** on how to get started with Locomotive scroll and canvas/WebGl.
 
 <br>
-<br>
 
-## Creative Agency Style Image Distortion Effect With Curtains.js & React
+# About the project:
+
+### Creative Agency Style Image Distortion Effect With Curtains.js & React
 
 > Curtains.js was created with just that issue in mind. It is a small vanilla WebGL javascript library that converts HTML elements containing images, videos and canvases into 3D WebGL textured planes, allowing you to animate them via shaders.
 
-# SECOND TEST 🍌
-
 <br>
+<br>
+
+### SECOND TEST 🍌 🌴
+
 <br>
 
 #### The First time i tried to follow this tutorial i failed.
 
-For that reason I decided to train my skills with another tutorial from the same youtuber, this time things worked differently. I structured the project in a different way before i started the lesson, so i did the same with this one, now i can finally see the project, of course with no animations on the images or the animated scroll, its a good thing because in my first try i had a blank page.
+For that reason I decided to train my skills with another [tutorial](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive) from the same youtuber, this time things worked differently. I structured the project in a different way before i started the lesson, so i did the same with this one, now i can finally see the project, of course with no animations on the images or the animated scroll, its a good thing because in my first try i had a blank page.
 
 [skew-distortion-on-scroll-locomotive](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive)
 
