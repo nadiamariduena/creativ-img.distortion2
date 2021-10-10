@@ -12,6 +12,7 @@ For that reason I decided to train my skills with another tutorial from the same
 [check the default structure here:](src/docs/defaultStructure.md)
 
 <br>
+
  [<img src="/src/img/project_beginning_preview.gif"/>](src/docs/delta-request-animation-frame.md)
 
 

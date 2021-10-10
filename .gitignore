@@ -12,9 +12,7 @@
 /build
 # 
 .cache
-package.json
-package-lock.json
-public
+ 
 
 # misc
 .DS_Store
