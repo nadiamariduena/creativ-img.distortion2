@@ -6,23 +6,51 @@ import React, { useContext, useRef, useLayoutEffect } from "react";
 // vertex and fragment shaders
 
 const PlaneIndex = ({ url, title, index, description }) => {
-  const direction = index % 2 === 0 ? "direct" : "reverse";
+  //
+  //
+  const planeEl = useRef();
+  //
+  //
 
+  const direction = index % 2 === 0 ? "direct" : "reverse";
+  //
+  //
   return (
     <div className={`plane-container ${direction}`}>
+      {/*  
+      
+      
+      
+      
+      */}
+      {/*  text  */}
       <div className="plane-details">
         <h6>/{title}</h6>
         <div className="vertical-line" />
         <p>{description}</p>
       </div>
-      <div className="plane-image"  >
+      {/*  
+      
+      
+      
+      
+      */}
+      {/* images */}
+      <div className="plane-image" ref={planeEl}>
         <img
           src={url}
           alt=""
           crossOrigin="anonymous"
           data-sampler="planeTexture"
         />
+        <div className="image" style={{ backgroundColor: `url{${url}}` }} />
       </div>
+      {/*  
+      
+      
+      
+      
+      */}
     </div>
   );
 };
