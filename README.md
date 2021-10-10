@@ -1552,3 +1552,206 @@ componentDidMount() {
 <br>
 
 #### BACK to the project DISPOSE()
+
+```javascript
+import React, { useContext, useRef, useLayoutEffect } from "react";
+import { CurtainsContext } from "../store/reduxStore";
+// import { CurtainsContext } from "../store/reduxStore";
+
+export default function CanvasIndex() {
+  //
+  //
+  const container = useRef();
+
+  // related store REDUX
+  const { state, dispatch } = useContext(CurtainsContext);
+  //
+
+  //L . E . R . P related
+  const someRef = useRef({ scrollEffect: 0 });
+  //
+  //
+  //
+
+  //
+  // DEFAULT: you will have errors until you insert your own data
+  //
+  useLayoutEffect(() => {
+    //
+    const { curtains } = state;
+    //
+    //
+    if (container.current && !curtains.container) {
+      // we will dispatch an action to the reducer
+
+      //here you are grabing the el from the library and assign to it
+      curtains.setContainer(container.current);
+      //
+      // Now we will listen few functions for the library, so that
+      // if something happens: we try to restore the contextwhen the canvas renders ???
+      // confusing explanation from the youtuber
+      // min: 14:22   https://youtu.be/mkmKy0XURK4
+      //
+      // You will update the container in the function on the bottom,
+      // dispatch({});
+
+      curtains
+        .onContextLost(() => {
+          curtains.restoreContext();
+        })
+        .onRender(() => {
+          //L . E . R . P
+          //When the canvas render we have a scroll effect
+          //   BUT FIRST SET UP the new useRef
+          const newScrollEffect = curtains.lerp(
+            someRef.current.scrollEffect,
+            0,
+            0.075
+          );
+          // 0, 0.075   when we will stop scrolling the elements will stop moving "smoothly"
+
+          someRef.current.scrollEffect = newScrollEffect;
+          //
+          dispatch({
+            type: "SET_SCROLL_EFFECT",
+            payload: newScrollEffect,
+          });
+        })
+        .onScroll(() => {
+          // this callback we will use to update the scroll effect, when
+          // the canvas is scrolled by the user.
+          // we will need to get the delta
+
+          // DELTA ** ///
+
+          const delta = curtains.getScrollDeltas();
+          // now we set the delta in the y direction and the -y ,
+          // (because we need the opposite values when scrolling)
+          delta.y = -delta.y;
+          /*
+
+
+"We need to clamp the value of 
+the DELTA as it can be really big and really small"
+
+
+https://css-tricks.com/snippets/sass/clamping-number/
+
+*/
+          // threshold | CLAMP ***
+          if (delta.y > 60) {
+            delta.y = 60;
+          } else if (delta.y < -60) {
+            delta.y = -60;
+          }
+          /*
+
+
+
+
+*/
+          //---*--  we will lerp again the values, this time you will ,
+          // multiply the values, it has to do with the ftp (frames times per second)
+          // another nice article:  https://stackoverflow.com/questions/43720669/lerp-with-time-deltatime
+
+          const newScrollEffect = curtains.lerp(
+            someRef.current.scrollEffect,
+            delta.y * 1.5,
+            0.5
+          );
+          // update/Dispatch the scroll
+          someRef.current.scrollEffect = newScrollEffect;
+          dispatch({
+            type: "SET_SCROLL_EFFECT",
+            payload: newScrollEffect,
+          });
+          //  DELTA ** ///
+        });
+      //
+      //
+      //update/Dispatch the container from the top
+      dispatch({
+        type: "SET_CURTAINS_CONTAINER",
+        payload: curtains.container,
+      });
+    }
+    //
+    //
+
+    // dispose curtains if we're unmounting the
+    // component (shouldn't ever happen)
+    return () => {
+      curtains.dispose();
+    };
+    /*
+
+ is an object method invoked to execute code
+  required for memory cleanup and release and 
+ reset unmanaged resources, such as file handles
+  and database connections
+*/
+    //
+    //
+    //
+  }, [container, state, dispatch]);
+
+  //
+  //
+
+  //
+  //
+  return (
+    <div className="Canvas" ref={container}>
+      hello hhhhhhhhhhhhhhhh
+    </div>
+  );
+}
+```
+
+<br>
+<br>
+
+# 🍌
+
+### I Changed the position of certain things, the code still working
+
+> **I just got confused:** The youtuber has a different code in the repo from the one he has on the video.
+
+- the curly brackets here: if (container.current && !curtains.container) {
+
+ended before the return dispose() but in his repo, it ends after.
+
+<br>
+<br>
+
+# 🥥
+
+### Hide the images from the DOM
+
+- Go to the **\_plane.scss** and hide the images
+
+```scss
+  }
+  .plane-image {
+    height: 90vh;
+
+    img {
+        // display: flex or block to see the imgs
+      display: none; //it should be hidden but i wanted to see if the images worked
+    }
+    // .image {
+    //   width: 100%;
+    //   height: 100%;
+    //   background-repeat: no-repeat;
+    //   background-position: center;
+    //   background-size: cover;
+    // }
+  }
+}
+```
+
+<br>
+
+### The reason why we do this, is because the Curtains library will reveal the images a bit like this effect:
+
+[image reveal](https://github.com/nadiamariduena/react-imgreveal-mini-portfolio1)

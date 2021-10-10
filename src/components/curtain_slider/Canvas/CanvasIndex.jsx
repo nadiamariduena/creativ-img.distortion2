@@ -4,6 +4,9 @@ import { CurtainsContext } from "../store/reduxStore";
 
 export default function CanvasIndex() {
   //
+  // related store REDUX
+  const { state, dispatch } = useContext(CurtainsContext);
+  //
   //
   const container = useRef();
   //L . E . R . P related
@@ -11,9 +14,7 @@ export default function CanvasIndex() {
   //
   //
   //
-  // related store REDUX
-  const { state, dispatch } = useContext(CurtainsContext);
-  //
+
   // DEFAULT: you will have errors until you insert your own data
   //
   useLayoutEffect(() => {
@@ -115,21 +116,21 @@ https://css-tricks.com/snippets/sass/clamping-number/
         type: "SET_CURTAINS_CONTAINER",
         payload: curtains.container,
       });
-    }
-    //
-    //
 
-    // dispose curtains if we're unmounting the
-    // component (shouldn't ever happen)
-    return () => {
-      curtains.dispose();
-    };
+      //
+      //
+
+      // dispose curtains if we're unmounting the
+      // component (shouldn't ever happen)
+      return () => {
+        curtains.dispose();
+      };
+    }
     /*
 
  is an object method invoked to execute code
   required for memory cleanup and release and 
- reset unmanaged resources, such as file handles
-  and database connections
+ reset unmanaged resources, such as file handles and database connections
 */
     //
     //

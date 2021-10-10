@@ -31,7 +31,8 @@
     height: 90vh;
 
     img {
-      display: flex; //it should be hidden but i wanted to see if the images worked
+      // display: flex or block to see the imgs
+      display: none; //it should be hidden but i wanted to see if the images worked
     }
     // .image {
     //   width: 100%;
