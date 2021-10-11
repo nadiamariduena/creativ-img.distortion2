@@ -2114,7 +2114,7 @@ return () => {
 
 <br>
 
-### I SUSPECT IT S BECAUSE OF ME NOT ADDING THE following:
+#### I SUSPECT, IT S BECAUSE OF ME NOT ADDING THE following:
 
 ```javascript
 // What i have
@@ -2274,10 +2274,179 @@ uniform vec2 uMouse;
 
 ### ADD THE UNIFORMS to our project
 
+[video : 27:38](https://youtu.be/mkmKy0XURK4)
+
 > Curtains js requires it to be passed as "UNIFORMS"
 
-- inside of it we will name our parameter
+##### inside of it we will name our parameter
+
+- name: **"uDirection",** //This is the name we will access in our shader
+
+<br>
+
+- type: **"1f",** //the type will be a float value
+
+<br>
 
 ```javascript
+//
+useLayoutEffect(() => {
+  const curtains = state.curtains; //2. here you pass the state.curtains to const curtains
+  //
+  //3  Now we will check if we have a container set,
+  // that means that the DOM is loaded (check the CanvasIndex.jsx: ref={container})
+  if (state.container) {
+    // 8. create the planeParams
+    // curtainsjs uses webGL so for the plane to be rendered,
+    // it needs to have the vertex shaders
+    //
+    const planeParams = {
+      // 10.
+      vertexShader: "", //default, you will pass step 9. here later
+      fragmentShader: "", //default, you will pass step 9. here later
+      //
+      // 11. we need to divide the plane into segments
+      widthSegments: 40,
+      heightSegments: 40,
+      //
+      //12. add the uniforms
+      uniforms: {
+        direction: {
+          name: "uDirection", //This is the name we will access in our shader
+          type: "1f", //the type will be a float value
+          value: 0,
+        },
+        time: {
+          name: "uTime",
+          type: "1f",
+          value: 0,
+        },
+      },
+      //
+      //
+    };
+    //
+    // 4. now we will create a new Plane,
+    // this plane is from the curtains JS, the second argument is from this : <div className="plane-image" ref={planeEl}>
+    const plane = new Plane(curtains, planeEl.current);
+    // planeEl.current this is reaching the DOM /images elements
+    // 6
+    return () => {
+      // 7
+      plane.remove();
+    };
+  }
+  //
+}, [state.container, state.curtains]); //1. this container will listen to : [state.container, state.curtains]);
+```
+
+<br>
+<br>
+
+### Now we can pass the shader (we have them in default)
+
+- Check if you correctly imported the shaders.js
+  > import { vs, fs } from "./shaders.js";
+
+```javascript
+// Replace this
+    // 10.
+        vertexShader: "", //default, you will pass step 9. here later
+        fragmentShader: "", //default, you will pass step 9. here later
+        //
+
+// for this
+    vertexShader: vs,
+ fragmentShader: fs,
 
 ```
+
+#### The person that created this tutorial said that he didnt created the shaders, he copied the file from the documentation, then edited it to his needs
+
+<br>
+
+##### the code below do the following:
+
+> It will update the coords/coordinates of the Plane according to a **sin** value:
+> sin((position.x \_ 0.5 - 0.5)
+
+```javascript
+void main() {
+  vec3 position = aVertexPosition;
+  float y = sin((position.x _ 0.5 - 0.5) _ PI) \* uDirection;
+  position.y -= y;
+       gl_Position = uPMatrix * uMVMatrix * vec4(position, 1.0);
+       // set the varyings
+       vTextureCoord = (planeTextureMatrix * vec4(aTextureCoord, 0., 1.)).xy;
+       vVertexPosition = position;
+       vDirection = uDirection;
+  }
+```
+
+<br>
+<br>
+
+# Sine 🚀
+
+> This is from a project i did 8 months ago
+
+- this is an example of what you can do with sin:
+
+[<img src="/src/img/forms_sin.gif"/>](https://github.com/nadiamariduena/petithomme-drawing-carpet_three-blender/blob/master/src/docs/WAVYGROUND.md)
+
+```javascript
+this.geometry = new THREE.SphereGeometry(20, 20, 20);
+// it will increase the segments in the geometry
+// its related to this   const waveX1 = 0.1 * Math.sin(dots_vertices.x * 2 + t_timeClock);
+//
+//
+this.material = new THREE.MeshBasicMaterial({
+  color: 0x000000,
+  wireframe: true,
+  // map: loader.load("/img/NataliaSamoilova_metalmagazine-10.jpg"),
+});
+
+//
+this.cube = new THREE.Mesh(this.geometry, this.material);
+this.scene.add(this.cube);
+//
+//the * time
+this.clock = new THREE.Clock();
+
+//
+//
+startAnimationLoop = () => {
+  const t_timeClock = this.clock.getElapsedTime();
+  //
+  // With the vertices we are going to grab all the points /vertices withing the cube/flag
+  //
+  //
+  this.cube.geometry.vertices.map((dots_vertices) => {
+    const waveX1 = 0.5 * Math.sin(dots_vertices.x * 2 + t_timeClock);
+    // second wave
+    const waveX2 = 0.25 * Math.sin(dots_vertices.x * 3 + t_timeClock * 2);
+    // 3 wave but in the Y direction
+    const waveY1 = 0.1 * Math.sin(dots_vertices.y * 5 + t_timeClock * 0.5); //to slowdown the time t_timeClock * 0.5);
+    //
+    //
+    dots_vertices.z = waveX1 + waveX2 + waveY1;
+  });
+
+  //
+  // // its going to wave the flag smoothly
+  this.cube.geometry.verticesNeedUpdate = true;
+  //
+
+  this.renderer.render(this.scene, this.camera);
+
+  this.requestID = window.requestAnimationFrame(this.startAnimationLoop);
+};
+```
+
+# Sine and cosine — a.k.a., sin(θ) and cos(θ)
+
+[<img src="/src/img/Sine_and_cosine.gif"/>]()
+
+> Sine and cosine — a.k.a., sin(θ) and cos(θ) — are functions revealing the shape of a right triangle. Looking out from a vertex with angle θ, sin(θ) is the ratio of the opposite side to the hypotenuse , while cos(θ) is the ratio of the adjacent side to the hypotenuse .
+
+[<img src="/src/img/din_cosine.png"/>]()

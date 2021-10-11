@@ -32,9 +32,8 @@ const PlaneIndex = ({ url, title, index, description }) => {
       //
       const planeParams = {
         // 10.
-        vertexShader: "", //default, you will pass step 9. here later
-        fragmentShader: "", //default, you will pass step 9. here later
-        //
+        vertexShader: vs,
+        fragmentShader: fs,
         // 11. we need to divide the plane into segments
         widthSegments: 40,
         heightSegments: 40,
@@ -43,7 +42,7 @@ const PlaneIndex = ({ url, title, index, description }) => {
         uniforms: {
           direction: {
             name: "uDirection", //This is the name we will access in our shader
-            type: "1f",   //the type will be a float value
+            type: "1f", //the type will be a float value
             value: 0,
           },
           time: {
