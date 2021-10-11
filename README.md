@@ -199,6 +199,25 @@ If the foreign content comes from an image obtained from either as HTMLCanvasEle
 
 # 🍪
 
+## CURTAINS
+
+```html
+CurtainsJS easily converts images and videos to WebGL. As far as adding WebGL
+effects to text, there are several different methods but perhaps the most common
+is to draw the text to a
+<canvas>
+  and then use it as a texture in the shader (e.g. 1, 2). It’s possible to do
+  most other HTML using html2canvas (or similar) and use that canvas as a
+  texture in the shader; however, this is not very performant.</canvas
+>
+```
+
+[Documentation](https://www.curtainsjs.com/curtains-class.html)
+
+[<img src="/src/img/curtains_documentation.jpg"/>](https://www.curtainsjs.com/curtains-class.html)
+
+[CurtainsJS ](https://pixallus.com/creating-webgl-effects-with-curtainsjs/)
+
 ### Import the curtains from the package curtains
 
 ```javascript
@@ -956,7 +975,8 @@ export default function CanvasIndex() {
     if (container.current && !curtains.container) {
       // we will dispatch an action to the reducer
 
-      //here you are grabing the el from the library and assign to it
+      // Here we are setting the container to the curtains.
+      //So grabing the el from the library and assign to it
       curtains.setContainer(container.current);
       //
       //
@@ -1077,7 +1097,8 @@ export default function CanvasIndex() {
     if (container.current && !curtains.container) {
       // we will dispatch an action to the reducer
 
-      //here you are grabing the el from the library and assign to it
+      // Here we are setting the container to the curtains.
+      //So grabing the el from the library and assign to it
       curtains.setContainer(container.current);
       //
       // Now we will listen few functions for the library, so that
@@ -1153,7 +1174,8 @@ export default function CanvasIndex() {
     if (container.current && !curtains.container) {
       // we will dispatch an action to the reducer
 
-      //here you are grabing the el from the library and assign to it
+      // Here we are setting the container to the curtains.
+      //So grabing the el from the library and assign to it
       curtains.setContainer(container.current);
       //
       // Now we will listen few functions for the library, so that
@@ -1356,7 +1378,8 @@ const newScrollEffect = curtains.lerp(
 if (container.current && !curtains.container) {
   // we will dispatch an action to the reducer
 
-  //here you are grabing the el from the library and assign to it
+  // Here we are setting the container to the curtains.
+  //So grabing the el from the library and assign to it
   curtains.setContainer(container.current);
   //
   // Now we will listen few functions for the library, so that
@@ -1489,7 +1512,11 @@ return () => {
 
 <br>
 
-# dispose();
+# dispose()
+
+[Curtains documentation](https://www.curtainsjs.com/curtains-class.html)
+
+> This function will cancel the requestAnimationFrame loop, remove all planes and delete the WebGL context.
 
 > In the context of C#, **dispose is an object method invoked to execute code required for memory cleanup and release and reset unmanaged resources**, such as file handles and database connections. ... The Dispose method, provided by the IDisposable interface, implements Dispose calls.
 
@@ -1584,7 +1611,8 @@ export default function CanvasIndex() {
     if (container.current && !curtains.container) {
       // we will dispatch an action to the reducer
 
-      //here you are grabing the el from the library and assign to it
+      // Here we are setting the container to the curtains.
+      //So grabing the el from the library and assign to it
       curtains.setContainer(container.current);
       //
       // Now we will listen few functions for the library, so that
@@ -1755,3 +1783,488 @@ ended before the return dispose() but in his repo, it ends after.
 ### The reason why we do this, is because the Curtains library will reveal the images a bit like this effect:
 
 [image reveal](https://github.com/nadiamariduena/react-imgreveal-mini-portfolio1)
+
+<br>
+<br>
+
+# 🍧
+
+## The PlaneIndex.jsx
+
+### The default code contains the following:
+
+```javascript
+import React, { useContext, useRef, useLayoutEffect } from "react";
+
+import { CurtainsContext } from "../store/reduxStore";
+
+const PlaneIndex = ({ url, title, index, description }) => {
+  //
+  //
+  const planeEl = useRef();
+  //
+  //
+  const { state } = useContext(CurtainsContext);
+  //
+  // you have the direct and reverse in the styles
+  const direction = index % 2 === 0 ? "direct" : "reverse";
+  //
+  //
+  return (
+    <div className={`plane-container ${direction}`}>
+      <div className="plane-details">
+        <h6>/{title}</h6>
+        <div className="vertical-line" />
+        <p>{description}</p>
+      </div>
+
+      <div className="plane-image" ref={planeEl}>
+        <img
+          src={url}
+          alt=""
+          crossOrigin="anonymous"
+          data-sampler="planeTexture"
+        />
+        <div className="image" style={{ backgroundColor: `url{${url}}` }} />
+      </div>
+    </div>
+  );
+};
+
+export default PlaneIndex;
+```
+
+#### Direct and reverse
+
+- It works a bit like the nav i created for other projects:
+
+```javascript
+// https://github.com/nadiamariduena/react-hide-show-onscroll/blob/master/src/components/Navbar.js
+<nav className={this.state.show ? "active" : "hidden"}>
+
+/*
+ https://github.com/nadiamariduena/react-hide-show-onscroll/blob/master/src/scss/main.scss
+
+
+ &.active {
+      visibility: visible;
+      transition: all 0.5s;
+      border-bottom: 1px solid #000;
+    }
+    &.hidden {
+      visibility: hidden;
+      transition: all 0.5s;
+      transform: translateY(-100%);
+    }
+
+*/
+```
+
+### in our project
+
+```scss
+&.direct {
+  grid-template-columns: 2fr 8fr;
+
+  .plane-details {
+    order: 1;
+  }
+  .plane-image {
+    order: 2;
+  }
+}
+&.reverse {
+  grid-template-columns: 8fr 2fr;
+  .plane-details {
+    order: 2;
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/order
+  }
+  .plane-image {
+    order: 1;
+  }
+}
+```
+
+#### ACCESS THE CONTEXT to pass the data from the reduxStore to the PlaneIndex
+
+- IMPORT and then add the following:
+
+  const { state } = useContext(CurtainsContext);
+  const { scrollEffect } = state;
+  //
+  const planeEl = useRef();
+  const someRef = useRef({ scrollEffect: 0 });
+
+```javascript
+import React, { useContext, useRef, useLayoutEffect } from "react";
+
+
+import { CurtainsContext } from "../store/reduxStore";
+
+const PlaneIndex = ({ url, title, index, description }) => {
+  //
+  // Accessing the state from the context
+  const { state } = useContext(CurtainsContext);
+  const { scrollEffect } = state;
+  //
+//
+  const planeEl = useRef();
+  const someRef = useRef({ scrollEffect: 0 });
+  //
+```
+
+#### The useEffect
+
+- add a basic useEffect
+
+```javascript
+React.useEffect(() => {
+  effect;
+  return () => {
+    cleanup;
+  };
+}, [input]);
+```
+
+- The useEffect will be responsible for updating: <u>the someRef = useRef({ scrollEffect: 0 }); values,
+  when the scroll effect from the 'state' will be updated,
+  so we will listen to the scroll effect:</u>
+
+```javascript
+const PlaneIndex = ({ url, title, index, description }) => {
+  //
+  // Accessing the state from the context
+  const { state } = useContext(CurtainsContext);
+  const { scrollEffect } = state;
+  //
+  const planeEl = useRef();
+  const someRef = useRef({ scrollEffect: 0 });
+  //
+  //
+  /*
+
+
+  The useEffect will be responsible for updating:
+  the someRef = useRef({ scrollEffect: 0 }); values,
+  when the scroll effect from the 'state' will be updated,
+  so we will listen to the scroll effect:
+
+
+
+
+  */
+ React.useEffect(() => {
+  effect
+  return () => {
+    cleanup
+  }
+}, [scrollEffect]) //related to    const { scrollEffect } = state;
+
+
+  const direction = index % 2 === 0 ? "direct" : "reverse";
+```
+
+### NEXT:
+
+#### We will Update the current.scroll effect with = scrollEffect
+
+```javascript
+React.useEffect(() => {
+  someRef.current.scrollEffect = scrollEffect;
+}, [scrollEffect]); //related to    const { scrollEffect } = state;
+```
+
+<br>
+
+## Create a <u>useLayoutEffect</u> 🍧
+
+- REPEAT:
+
+> **What is the useLayoutEffect**
+> The useLayoutEffect works similarly to useEffect but rather working asynchronously like useEffect hook, <u>it fires synchronously after all DOM loading is done loading.</u> This is useful for synchronously re-rendering the DOM and also to read the layout from the DOM.
+
+<br>
+
+#### uselayouteffect vs useEffect
+
+- useLayoutEffect is identical to useEffect, but it's major key difference is that **it gets triggered synchronously after all DOM mutation**. ... This hook is optimized, to allow the engineer to make changes to a DOM node directly before the browser has a chance to paint.
+
+```javascript
+const planeEl = useRef();
+const someRef = useRef({ scrollEffect: 0 });
+//
+useLayoutEffect(() => {
+  effect;
+  return () => {
+    cleanup;
+  };
+}, [input]);
+
+//
+
+React.useEffect(() => {
+  someRef.current.scrollEffect = scrollEffect;
+}, [scrollEffect]); //related to    const { scrollEffect } = state;
+```
+
+<br>
+<br>
+<br>
+
+### Add the following:
+
+> Note: you are goin to have some errors, just hide the return () => {
+
+      cleanup;
+    };
+
+## 1.
+
+```javascript
+useLayoutEffect(() => {
+  const curtains = state.curtains; //2. here you pass the state.curtains to const curtains
+  //
+  //3  Now we will check if we have a container set,
+  // that means that the DOM is loaded (check the CanvasIndex.jsx: ref={container})
+  if (state.container) {
+  }
+  //
+  //
+  return () => {
+    cleanup;
+  };
+}, [state.container, state.curtains]); //1. this container will listen to : [state.container, state.curtains]);
+```
+
+## 2. import the follwing:
+
+- import { Plane, Vec2, Vec3 } from "curtainsjs"
+
+```javascript
+import { Plane, Vec2, Vec3 } from "curtainsjs"; //5.
+
+/*
+
+
+                    data
+
+*/
+useLayoutEffect(() => {
+  const curtains = state.curtains; //2. here you pass the state.curtains to const curtains
+  //
+  //3  Now we will check if we have a container set,
+  // that means that the DOM is loaded (check the CanvasIndex.jsx: ref={container})
+  if (state.container) {
+    // 4. now we will create a new Plane,
+    // this plane is from the curtains JS, the second argument is from this : <div className="plane-image" ref={planeEl}>
+    const plane = new Plane(curtains, planeEl.current);
+    // planeEl.current this is reaching the DOM /images elements
+  }
+  //
+  //
+  // return () => {
+  //   cleanup;
+  // };
+}, [state.container, state.curtains]); //1. this container will listen to : [state.container, state.curtains]);
+```
+
+### Grab the return and put it inside the if statement
+
+```javascript
+import { Plane, Vec2, Vec3 } from "curtainsjs"; //5.
+
+/*
+
+
+                    data
+
+*/
+useLayoutEffect(() => {
+  const curtains = state.curtains; //2. here you pass the state.curtains to const curtains
+  //
+  //3  Now we will check if we have a container set,
+  // that means that the DOM is loaded (check the CanvasIndex.jsx: ref={container})
+  if (state.container) {
+    // 4. now we will create a new Plane,
+    // this plane is from the curtains JS, the second argument is from this : <div className="plane-image" ref={planeEl}>
+    const plane = new Plane(curtains, planeEl.current);
+    // planeEl.current this is reaching the DOM /images elements
+    // 6
+    return () => {
+      // 7
+      plane.remove();
+    };
+  }
+  //
+}, [state.container, state.curtains]); //1. this container will listen to : [state.container, state.curtains]);
+```
+
+<br>
+
+#### After adding the plane.remove something happened, i had this dark boxes (where the images are)
+
+```javascript
+return () => {
+  // 7
+  plane.remove();
+};
+```
+
+[<img src="/src/img/plane_remove.jpg"/>]()
+
+<br>
+<br>
+
+## 🔺 IMPORTANT: WebGL related
+
+### 8. Create the planeParams
+
+> curtainsjs uses webGL so for the plane to be rendered, it needs to have the vertex shaders.
+
+<br>
+
+#### 9. Import the following:
+
+- Check the repository of the lesson, copy the file and paste it in your Plane folder.
+
+> import { vs, fs } from "./shaders.js";
+
+<br>
+
+## Vertex shader
+
+[video: What is a Shader? | Three.js Tutorial on Shaders (beginners)](https://www.youtube.com/watch?v=C8Cuwq1eqDw)
+
+[video: What is a Shader? | Pixel and Vertex Shaders](https://youtu.be/TDZMSozKZ20)
+
+1. <u>The Vertex Shader is the programmable Shader stage in the rendering pipeline that handles the processing of individual vertices.</u> Vertex shaders are fed Vertex Attribute data, as specified from a vertex array object by a drawing command. ... There must be a 1:1 mapping from input vertices to output vertices.
+   <br>
+
+2. <u>A vertex shader is a graphics processing function, which manipulates vertex data values on an X (length), Y (height) and Z (depth) 3D plane through mathematical operations on an object</u> .
+
+### What is a shader in WebGL?
+
+Shaders are the programs that run on GPU. Shaders are written in OpenGL ES Shader Language (known as ES SL). ES SL has variables of its own, data types, qualifiers, built-in inputs and outputs
+
+```javascript
+import { vs, fs } from "./shaders.js"; //9
+// vertex and fragment shaders
+/*
+
+            DATA
+
+
+*/
+useLayoutEffect(() => {
+  const curtains = state.curtains; //2. here you pass the state.curtains to const curtains
+  //
+  //3  Now we will check if we have a container set,
+  // that means that the DOM is loaded (check the CanvasIndex.jsx: ref={container})
+  if (state.container) {
+    // 8. create the planeParams
+    // curtainsjs uses webGL so for the plane to be rendered,
+    // it needs to have the vertex shaders
+    //
+    const planeParams = {};
+    //
+    // 4. now we will create a new Plane,
+    // this plane is from the curtains JS, the second argument is from this : <div className="plane-image" ref={planeEl}>
+    const plane = new Plane(curtains, planeEl.current);
+    // planeEl.current this is reaching the DOM /images elements
+    // 6
+    return () => {
+      // 7
+      plane.remove();
+    };
+  }
+  //
+}, [state.container, state.curtains]); //1. this container will listen to : [state.container, state.curtains]);
+```
+
+## 10. , 11.
+
+- 10. add the shaders /default
+
+- 11. we need to divide the plane into segments
+
+```javascript
+import { vs, fs } from "./shaders.js"; //9
+// vertex and fragment shaders
+/*
+
+            DATA
+
+
+*/
+useLayoutEffect(() => {
+  const curtains = state.curtains; //2. here you pass the state.curtains to const curtains
+  //
+  //3  Now we will check if we have a container set,
+  // that means that the DOM is loaded (check the CanvasIndex.jsx: ref={container})
+  if (state.container) {
+    // 8. create the planeParams
+    // curtainsjs uses webGL so for the plane to be rendered,
+    // it needs to have the vertex shaders
+    //
+    const planeParams = {
+      // 10. add the shaders /default
+      vertexShader: "", //default, you will pass step 9. here later
+      fragmentShader: "", //default, you will pass step 9. here later
+      //
+      // 11. we need to divide the plane into segments
+      widthSegments: 40,
+      heightSegments: 40,
+      //
+    };
+    //
+    // 4. now we will create a new Plane,
+    // this plane is from the curtains JS, the second argument is from this : <div className="plane-image" ref={planeEl}>
+    const plane = new Plane(curtains, planeEl.current);
+    // planeEl.current this is reaching the DOM /images elements
+    // 6
+    return () => {
+      // 7
+      plane.remove();
+    };
+  }
+  //
+}, [state.container, state.curtains]); //1. this container will listen to : [state.container, state.curtains]);
+```
+
+<br>
+
+# 🔴 UNIFORMS
+
+- A uniform is a global Shader variable declared with the "uniform" storage qualifier. These act as parameters that the user of a shader program can pass to that program. ... This makes them unlike shader stage inputs and outputs, which are often different for each invocation of a shader stage.
+
+<br>
+
+#### ????
+
+### Add event listeners to connect your page with the WebGL effects
+
+- Now we can add interactivity to the WebGL portion! **We need to pass in some variables (uniforms) to our shaders and affect those variables when the user interacts with our elements.**
+
+> This is the section where I’ll go into the most detail because it’s the core for how we connect JavaScript to our shaders.
+
+##### First, we need to declare some uniforms in our shaders. We only need the mouse position in our vertex shader:
+
+```javascript
+// The un-transformed mouse position
+uniform vec2 uMouse;
+```
+
+##### [continue reading | Creating WebGL Effects with CurtainsJS ](https://pixallus.com/creating-webgl-effects-with-curtainsjs/)
+
+<br>
+<br>
+
+### ADD THE UNIFORMS to our project
+
+> Curtains js requires it to be passed as "UNIFORMS"
+
+- inside of it we will name our parameter
+
+```javascript
+
+```

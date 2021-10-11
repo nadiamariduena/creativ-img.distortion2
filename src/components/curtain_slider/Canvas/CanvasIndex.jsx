@@ -5,6 +5,7 @@ import { CurtainsContext } from "../store/reduxStore";
 export default function CanvasIndex() {
   //
   // related store REDUX
+
   const { state, dispatch } = useContext(CurtainsContext);
   //
   //
@@ -24,8 +25,10 @@ export default function CanvasIndex() {
     //
     if (container.current && !curtains.container) {
       // we will dispatch an action to the reducer
-
-      //here you are grabing the el from the library and assign to it
+      //
+      //
+      // Here we are setting the container to the curtains.
+      //So grabing the el from the library and assign to it
       curtains.setContainer(container.current);
       //
       // Now we will listen few functions for the library, so that
