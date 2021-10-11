@@ -248,7 +248,7 @@ const initialState = {
 
 <br>
 
-> **NOTE:** The reason why i care about explaining the redux here below, is not because i want to have some knowledge, but because i am planning to create a shop after 1 more tutorial with another scroll, and it will be a M.E.R.N one so the faster i get to understand it the better/easier it will be.
+> **NOTE:** The reason why i care about explaining the redux here below, is not because i want to have some knowledge but because i am planning to create a shop after 1 more tutorial with another scroll, and it will be a M.E.R.N, so the faster i get to understand it, the better/easier it will be.
 
 <br>
 
@@ -2013,7 +2013,7 @@ React.useEffect(() => {
 
 ### Add the following:
 
-> Note: you are goin to have some errors, just hide the return () => {
+> Note: you are going to have some errors, just hide the return () => {
 
       cleanup;
     };
@@ -2036,7 +2036,7 @@ useLayoutEffect(() => {
 }, [state.container, state.curtains]); //1. this container will listen to : [state.container, state.curtains]);
 ```
 
-## 2. import the follwing:
+## 2. import the following:
 
 - import { Plane, Vec2, Vec3 } from "curtainsjs"
 
@@ -2101,7 +2101,7 @@ useLayoutEffect(() => {
 
 <br>
 
-#### After adding the plane.remove something happened, i had this dark boxes (where the images are)
+#### After adding the plane.remove something happened, the images appeared but as dark boxes (where the images are)
 
 ```javascript
 return () => {
@@ -2111,6 +2111,19 @@ return () => {
 ```
 
 [<img src="/src/img/plane_remove.jpg"/>]()
+
+<br>
+
+### I SUSPECT IT S BECAUSE OF ME NOT ADDING THE following:
+
+```javascript
+// What i have
+const plane = new Plane(curtains, planeEl.current);
+// what i should have added
+const plane = new Plane(curtains, planeEl.current, planeParams);
+```
+
+- I didnt add it because i dont have the params object
 
 <br>
 <br>
