@@ -2444,9 +2444,8 @@ startAnimationLoop = () => {
 ```
 
 # Sine and cosine — a.k.a., sin(θ) and cos(θ)
-
-
-[<img src="/src/img/Sine_and_cosine.gif"/>]()
+<!-- 
+[<img src="/src/img/Sine_and_cosine.gif"/>]() -->
 
 > Sine and cosine — a.k.a., sin(θ) and cos(θ) — are functions revealing the shape of a right triangle. Looking out from a vertex with angle θ, sin(θ) is the ratio of the opposite side to the hypotenuse , while cos(θ) is the ratio of the adjacent side to the hypotenuse .
 
@@ -2597,6 +2596,8 @@ const planeParams = {
 <br>
 <br>
 
+ 
+
 [<img src="/src/img/result_after_adding_planeParams.gif"/>]()
 
 ### Now you can apply the following:
@@ -2620,36 +2621,24 @@ const plane = new Plane(curtains, planeEl.current, planeParams);
 
 [<img src="/src/img/afterPlaneParaems.jpg"/>]()
 
+
 <br>
 <br>
- 
- <br>
-<br>
 
-### In the video tutorial, he got an error after the last changes.
+### In the video tutorial he got an error after the last changes
 
-- The reason: He named his component Plane and i think "Plane" already exists inside the curtain.js
+- The reason: He named his component Plane and i think "Plane" already exists inside the curtain.
 
-> I didnt get that error because i structured the project differently from the beginning and also because i gave certain components a different name.
+> I didnt get that error because i structured the project differently and also because i gave my components a different name.
 
 ### 🚀
 
-### With the following: the animation on the images is going to be launched
+### with the following the animation is going to be launched
 
 ```javascript
-// 4. now we will create a new Plane,
-// this plane is from the curtains JS, the second argument is from this : <div className="plane-image" ref={planeEl}>
-const plane = new Plane(curtains, planeEl.current, planeParams);
-// planeEl.current this is reaching the DOM /images elements
-//
-//13. to update the shaders /the moving img/blob you control that in the shaders.js
-plane.onRender(() => {
-  // we will increment the time by 1
-  plane.uniforms.time.value++;
-  //
-  // this one below controls that effect of courve on the image when we scroll
-  plane.uniforms.direction.value = someRef.current.scrollEffect / 500; //1000 will reduce it
-});
-```
+ plane.onRender(() => {
+        plane.uniforms.time.value++;
 
-[<img src="/src/img/img_animation1.gif"/>]()
+        plane.uniforms.direction.value = someRef.current.scrollEffect / 500;
+      });
+```

@@ -60,10 +60,23 @@ const PlaneIndex = ({ url, title, index, description }) => {
       // this plane is from the curtains JS, the second argument is from this : <div className="plane-image" ref={planeEl}>
       const plane = new Plane(curtains, planeEl.current, planeParams);
       // planeEl.current this is reaching the DOM /images elements
-      // 6
+      //
+      //13. to update the shaders /the moving img/blob you control that in the shaders.js
+      plane.onRender(() => {
+        // we will increment the time by 1
+        plane.uniforms.time.value++;
+        //
+        // this one below controls that effect of courve on the image when we scroll
+        plane.uniforms.direction.value = someRef.current.scrollEffect / 500; //1000 will reduce it
+      });
+
+      //
+      //
+      // 6  remove plane if we're unmounting the component
       return () => {
         // 7
         plane.remove();
+        plane.dispose();
       };
     }
     //
