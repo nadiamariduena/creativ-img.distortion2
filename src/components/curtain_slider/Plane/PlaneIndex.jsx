@@ -2,6 +2,7 @@ import React, { useContext, useRef, useLayoutEffect } from "react"; //0
 import { Plane, Vec2, Vec3 } from "curtainsjs"; //5.
 
 import { CurtainsContext } from "../store/reduxStore";
+// // vertex shader and fragment shader
 import { vs, fs } from "./shaders.js"; //9
 
 /*
@@ -41,12 +42,12 @@ const PlaneIndex = ({ url, title, index, description }) => {
         //12. add the uniforms
         uniforms: {
           direction: {
-            name: "uDirection", //This is the name we will access in our shader
+            name: "uDirection", //data coming from the shaders.js
             type: "1f", //the type will be a float value
             value: 0,
           },
           time: {
-            name: "uTime",
+            name: "uTime", //data coming from the shaders.js
             type: "1f",
             value: 0,
           },
@@ -57,7 +58,7 @@ const PlaneIndex = ({ url, title, index, description }) => {
       //
       // 4. now we will create a new Plane,
       // this plane is from the curtains JS, the second argument is from this : <div className="plane-image" ref={planeEl}>
-      const plane = new Plane(curtains, planeEl.current);
+      const plane = new Plane(curtains, planeEl.current, planeParams);
       // planeEl.current this is reaching the DOM /images elements
       // 6
       return () => {

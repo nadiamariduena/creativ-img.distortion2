@@ -1,3 +1,4 @@
+// vertex shader
 const vs = `
     #ifdef GL_ES
     precision mediump float;
@@ -19,6 +20,9 @@ const vs = `
     uniform float uDirection;
     void main() {
         vec3 position = aVertexPosition;
+        // 
+        // He say that it will assign a position according to the direction the users scrolls
+       
         float y = sin((position.x * 0.5 - 0.5) * PI) * uDirection;
         position.y -= y;
         
@@ -30,6 +34,7 @@ const vs = `
     }
     `;
 
+// fs : fragment shader
 const fs = `
 #ifdef GL_ES
   precision mediump float;
@@ -42,6 +47,7 @@ varying vec2 vTextureCoord;
 uniform sampler2D planeTexture;
 uniform float vDirection;
 uniform float uTime;
+// 
 void main(){
 vec2 textureCoord = vTextureCoord;
 const float PI = 3.141592;

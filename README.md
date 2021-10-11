@@ -2451,10 +2451,7 @@ startAnimationLoop = () => {
 
 [<img src="/src/img/din_cosine.png"/>]()
 
-
 ### back to the code
-
- 
 
 > It will update the coords/coordinates of the Plane according to a **sin** value:
 > sin((position.x \_ 0.5 - 0.5)
@@ -2471,3 +2468,155 @@ void main() {
        vDirection = uDirection;
   }
 ```
+
+[<img src="/src/img/brainstorm2.gif"/>]()
+
+# What is happening???? 🍊
+
+- OH WELL...
+
+>         float y = sin((position.x * 0.5 - 0.5) * PI) * uDirection;
+
+##### if you remember, we added this stuff inside the PlaneIndex.jsx
+
+```javascript
+const planeParams = {
+  // 10.
+  vertexShader: vs,
+  fragmentShader: fs,
+  // 11. we need to divide the plane into segments
+  widthSegments: 40,
+  heightSegments: 40,
+  //
+  //12. add the uniforms
+  uniforms: {
+    direction: {
+      name: "uDirection", //This is the name we will access in our shader
+      type: "1f", //the type will be a float value
+      value: 0,
+    },
+    time: {
+      name: "uTime",
+      type: "1f",
+      value: 0,
+    },
+  },
+  //
+  //
+};
+```
+
+#### check step 10. <u>the vertexShader: vs</u> , contains the following data, that is inside the shaders.js
+
+```javascript
+// shaders.js
+const vs = `
+    #ifdef GL_ES
+    precision mediump float;
+    #endif
+    
+    #define PI 3.14159265359
+    
+    // those are the mandatory attributes that the lib sets
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
+    // those are mandatory uniforms that the lib sets and that contain our model view and projection matrix
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat4 planeTextureMatrix;
+    // if you want to pass your vertex and texture coords to the fragment shader
+    varying vec3 vVertexPosition;
+    varying vec2 vTextureCoord;
+    varying float vDirection;
+    uniform float uDirection;
+    // 
+    // 
+    void main() {
+        vec3 position = aVertexPosition;
+        float y = sin((position.x * 0.5 - 0.5) * PI) * uDirection;
+        position.y -= y;
+        
+        gl_Position = uPMatrix * uMVMatrix * vec4(position, 1.0);
+        // set the varyings
+        vTextureCoord = (planeTextureMatrix * vec4(aTextureCoord, 0., 1.)).xy;
+        vVertexPosition = position;
+        vDirection = uDirection;
+    }
+    `;
+```
+
+#### check step 12. <u>direction: { name: "uDirection"</u> ,
+
+```javascript
+const planeParams = {
+  // 10.
+  vertexShader: vs,
+  fragmentShader: fs,
+  // 11. we need to divide the plane into segments
+  widthSegments: 40,
+  heightSegments: 40,
+  //
+  //12. add the uniforms
+  uniforms: {
+    direction: {
+      name: "uDirection", //This is the name we will access in our shader
+      type: "1f", //the type will be a float value
+      value: 0,
+    },
+    time: {
+      name: "uTime",
+      type: "1f",
+      value: 0,
+    },
+  },
+  //
+  //
+};
+```
+
+### <u>direction: { name: "uDirection"</u>
+
+- correspond to the following inside the shaders.js
+
+```javascript
+    uniform float uDirection;
+    void main() {
+        vec3 position = aVertexPosition;
+        float y = sin((position.x * 0.5 - 0.5) * PI) * uDirection;
+```
+
+### The same with the other one: <u> time: {name: "uTime",</u>
+
+- const fs =
+
+[<img src="/src/img/brainstorm.gif"/>]()
+
+> He say that it will assign a position according to the direction the users scrolls
+
+<br>
+<br>
+
+ 
+
+[<img src="/src/img/result_after_adding_planeParams.gif"/>]()
+
+### Now you can apply the following:
+
+```javascript
+   // 8. create the planeParams
+  const planeParams = {
+        // 10.
+
+```
+
+### Apply it here:
+
+```javascript
+//
+// 4. now we will create a new Plane,
+// this plane is from the curtains JS, the second argument is from this : <div className="plane-image" ref={planeEl}>
+const plane = new Plane(curtains, planeEl.current, planeParams);
+// planeEl.current this is reaching the DOM /images elements
+```
+
+[<img src="/src/img/afterPlaneParaems.jpg"/>]()
