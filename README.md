@@ -1,30 +1,49 @@
 # 🍌
 
-[<img src="/src/img/img_animation1.gif"/>]()
-
 # CREDITS:
 
 Big thanks to **[
-Nicu Barbaros](https://github.com/nicubarbaros)** , for sharing this **Great tutorial** on how to get started with Locomotive scroll and canvas/WebGl.
+Nicu Barbaros](https://github.com/nicubarbaros)** , for sharing this **Great tutorial** on how to get started with Curtainsjs and canvas/WebGl.
+
+[<img src="/src/img/img_animation1.gif"/>]()
+
+## CURTAINS
+
+```html
+CurtainsJS easily converts images and videos to WebGL. As far as adding WebGL
+effects to text, there are several different methods but perhaps the most common
+is to draw the text to a
+<canvas>
+  and then use it as a texture in the shader (e.g. 1, 2). It’s possible to do
+  most other HTML using html2canvas (or similar) and use that canvas as a
+  texture in the shader; however, this is not very performant.</canvas
+>
+```
+
+[Documentation](https://www.curtainsjs.com/curtains-class.html)
+
+<br>
+<br>
+<br>
+
+## About:
+
+# 🌴🍌
 
 <br>
 
-# About the project:
-
-### Creative Agency Style Image Distortion Effect With Curtains.js & React
+## Creative Agency Style Image Distortion Effect With Curtains.js & React
 
 > Curtains.js was created with just that issue in mind. It is a small vanilla WebGL javascript library that converts HTML elements containing images, videos and canvases into 3D WebGL textured planes, allowing you to animate them via shaders.
 
 <br>
 <br>
 
-### SECOND TEST 🍌 🌴
+#### SECOND TEST
 
-<br>
+#### The First time i tried to follow this tutorial, i failed!
 
-#### The First time i tried to follow this tutorial i failed.
-
-For that reason I decided to develop my skills with another [tutorial](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive) from the same youtuber, this time things worked differently. I structured the project in a different way before i started the lesson, so i did the same with this one, now i can finally see the project, of course with no animations on the images or the animated scroll, its a good thing because in my first try i had a blank page.
+For that reason I decided to develop my skills with another [tutorial](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive) from the same youtuber, this time things worked differently. I structured the project in a different way before i started the lesson, so i did the same with this one. Now i can finally see the project, of course with no animations on the images or the animated scroll, its a good thing because in my first try i had a blank page.
 
 [skew-distortion-on-scroll-locomotive](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive)
 
