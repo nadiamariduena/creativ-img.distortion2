@@ -2450,3 +2450,24 @@ startAnimationLoop = () => {
 > Sine and cosine — a.k.a., sin(θ) and cos(θ) — are functions revealing the shape of a right triangle. Looking out from a vertex with angle θ, sin(θ) is the ratio of the opposite side to the hypotenuse , while cos(θ) is the ratio of the adjacent side to the hypotenuse .
 
 [<img src="/src/img/din_cosine.png"/>]()
+
+
+### back to the code
+
+ 
+
+> It will update the coords/coordinates of the Plane according to a **sin** value:
+> sin((position.x \_ 0.5 - 0.5)
+
+```javascript
+void main() {
+  vec3 position = aVertexPosition;
+  float y = sin((position.x _ 0.5 - 0.5) _ PI) \* uDirection;
+  position.y -= y;
+       gl_Position = uPMatrix * uMVMatrix * vec4(position, 1.0);
+       // set the varyings
+       vTextureCoord = (planeTextureMatrix * vec4(aTextureCoord, 0., 1.)).xy;
+       vVertexPosition = position;
+       vDirection = uDirection;
+  }
+```
