@@ -1,4 +1,23 @@
-# 🍌
+# 🍌 🐒
+
+# Fail & Success
+
+
+#### Small notice:
+After 7 months of teaching myself blender, I am back to code, So this is one of the several projects I am preparing to get back in shape :).
+
+<br>
+
+#### The First time i tried to follow this tutorial, i failed!
+
+For that reason I decided to develop my skills with another [tutorial](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive) from the same youtuber, **this time things worked differently. I structured the project in a different way before i started the lesson**, so i did the same with this project. Now i can finally visualize the elements in the page, of course with no animations on the images or the animated scroll, its a good thing because in my **first try i had a blank page**.
+
+[skew-distortion-on-scroll-locomotive](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive)
+
+#### After i finish with this project i will try to adapt this effect and the effect of the locomotive scroll to find the issues, as they are both "scroll related effects".
+
+<br>
+<br>
 
 # CREDITS:
 
@@ -20,13 +39,41 @@ is to draw the text to a
 >
 ```
 
+<br>
+
 [Documentation](https://www.curtainsjs.com/curtains-class.html)
 
+[Documentation | REACT Curtains](https://github.com/martinlaxenaire/react-curtains)
+
+<br>
+
+#### The Plane
+
+[documentation | PLANE](https://github.com/martinlaxenaire/react-curtains/blob/main/plane.md)
+
+```html
+The <Plane /> component will create a WebGL Plane, acting as a wrapper for the
+curtains.js Plane class.
+```
+
+#### The Curtains file
+
+[documentation | Curtains](https://github.com/martinlaxenaire/react-curtains/blob/main/curtains.md)
+
+```html
+The <Curtains></Curtains> component is responsible for the creation of the WebGL
+context. It will act as a wrapper for the curtains.js Curtains class.
+```
+
+###### Do not try to create a react-curtains component or use one of those hooks outside this component or your app will crash.
+
+[<img src="/src/img/promo.gif"/>](https://github.com/martinlaxenaire/curtainsjs)
+
 <br>
 <br>
 <br>
 
-## About:
+# About:
 
 # 🌴🍌
 
@@ -34,21 +81,12 @@ is to draw the text to a
 
 ## Creative Agency Style Image Distortion Effect With Curtains.js & React
 
-> Curtains.js was created with just that issue in mind. It is a small vanilla WebGL javascript library that converts HTML elements containing images, videos and canvases into 3D WebGL textured planes, allowing you to animate them via shaders.
+> Curtains.js was created with just that issue in mind. It is a small vanilla WebGL javascript library that converts HTML elements containing images, videos and canvases into 3D WebGL textured planes, allowing you to animate them via shaders. **[Nicu Barbaros](https://github.com/nicubarbaros)**
 
 <br>
 <br>
 
-#### SECOND TEST
-
-#### The First time i tried to follow this tutorial, i failed!
-
-For that reason I decided to develop my skills with another [tutorial](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive) from the same youtuber, this time things worked differently. I structured the project in a different way before i started the lesson, so i did the same with this one. Now i can finally see the project, of course with no animations on the images or the animated scroll, its a good thing because in my first try i had a blank page.
-
-[skew-distortion-on-scroll-locomotive](https://github.com/nadiamariduena/skew-distortion-on-scroll-locomotive)
-
-<br>
-<br>
+## Lets begin!!
 
 #### This is how the project looks before start adding all the animation related elements
 
