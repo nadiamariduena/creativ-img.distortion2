@@ -26,7 +26,7 @@ Nicu Barbaros](https://github.com/nicubarbaros)** , for sharing this **Great tut
 
 [<img src="/src/img/img_animation1.gif"/>]()
 
-## CURTAINS
+# CURTAINS
 
 ```html
 CurtainsJS easily converts images and videos to WebGL. As far as adding WebGL
